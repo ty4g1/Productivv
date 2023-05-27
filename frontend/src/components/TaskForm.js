@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTasksContext } from "../hooks/useTasksContext";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { baseURL } from "../baseURL";
 const TaskForm = () => {
     const {dispatch} = useTasksContext();
     const [title, setTitle] = useState('');
@@ -15,7 +16,7 @@ const TaskForm = () => {
             return 
         }
         const task = {title: title.trim(), time, date};
-        const response = await fetch('/api/tasks', {
+        const response = await fetch(baseURL + '/api/tasks', {
             method: 'POST',
             body: JSON.stringify(task),
             headers: {

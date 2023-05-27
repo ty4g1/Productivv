@@ -3,13 +3,14 @@ import TaskDesc from "../components/TaskDesc"
 import TaskForm from "../components/TaskForm";
 import { useTasksContext } from "../hooks/useTasksContext";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { baseURL } from "../baseURL";
 const Home = () => {
     const {tasks, dispatch} = useTasksContext();
     const { user } = useAuthContext();
     useEffect(() => {
 
         const fetchWorkouts = async () => {
-            const response = await fetch('/api/tasks', {
+            const response = await fetch(baseURL + '/api/tasks', {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }
