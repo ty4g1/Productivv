@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+/* base styles */
+* {
+  margin: 0;
+  font-family: "Quicksand";
+  color: #333;
+}
+.container {
+  position: relative;
+  background-color: #9d00ff;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  border-bottom: 1px solid #f2f2f2;
+}
+.container h1 {
+  font-size: 2em;
+  color: white;
+  cursor: pointer;
+}
+
+.container a {
+  margin-left: 25px;
+  text-decoration: none;
+  padding: 6px;
+}
+.container a:hover {
+  color: white;
+}
+.pages {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 50px;
+}
+.home {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 100px;
+}
+.task-desc {
+  background-color: #9d00ff;
+  border: #f2f2f2;
+  border-radius: 10px;
+  position: relative;
+  align-items: center;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.task-desc:hover {
+  box-shadow: 2px 2px 5px #333333cf;
+}
+
+.task-desc h2 {
+  font-size: 1.2em;
+  margin-bottom: 5px;
+  color: white;
+}
+
+.task-desc p {
+  font-size: 0.9em;
+  color: white;
+}
+
+.task-form, .login-form, .signup-form {
+  margin: 10px auto;
+  padding: 30px;
+  border-radius: 30px;
+  text-align: center;
+  background-color: #9d00ff;
+  height: fit-content;
+  width: fit-content;
+}
+
+.task-form h2, .login-form h2, .signup-form h2 {
+  position: relative;
+  color: white;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+.task-form label, .task-form input, .login-form label, .login-form input, .signup-form input, .signup-form label {
+  display: block;
+}
+
+.task-form label, .login-form label, .signup-form label {
+  font-size: 1.2em;
+  color: white;
+}
+
+.task-form input, .login-form input, .signup-form input {
+  margin: 10px auto;
+  padding: 5px;
+  border: rgb(227, 227, 227) solid 5px;
+  border-radius: 10px;
+}
+
+.task-form button, .login-form button, .signup-form button {
+  margin-top: 30px;
+  font-size: 1.2em;
+  background-color: white;
+  border-radius: 50px;
+  padding: 10px;
+  border: 2px solid white;
+  font-weight: bold;
+  background-color: #9d00ff;
+  color: white;
+  cursor: pointer;
+}
+
+.task-form button:hover, .login-form button:hover, .signup-form button:hover {
+  background-color: #3f0065;
+}
+
+.error {
+  border-radius: 15px;
+  padding: 20px;
+  border: white solid;
+  margin-top: 10px;
+  color: white;
+}
+
+.task-desc span{
+  font-size: 1em;
+  margin: 10px;
+  padding: 5px;
+  color: white;
+  font-weight: bold;
+  border: 2px solid white;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.task-desc .delete {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.task-desc .edit {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.task-desc span:hover {
+  background-color: #3f0065;
+}
+
+.no-tasks h1 {
+  font-size: 100px;
+  text-align: center;
+  margin-top: 100px;
+  color: #9d00ff;
+  font-weight: bolder;
+}
+
+.no-tasks p {
+  text-align: center;
+  font-size: 50px;
+}
+
+.task-edit-form {
+  position: relative;
+}
+
+.task-edit-form input {
+  display: block;
+  margin-bottom: 5px;
+  color: white;
+  background-color: #9d00ff;
+  border: 2px white solid;
+  padding: 5px;
+  border-radius: 50px;
+}
+
+.task-edit-form .h2-upd{
+  padding: 10px;
+  font-size: 1.2em;
+  font-weight: bolder;
+}
+
+.task-edit-form button{
+  position: absolute;
+  font-size: 1.1em;
+  padding: 5px;
+  color: white;
+  font-weight: bold;
+  border: 2px solid white;
+  border-radius: 50px;
+  cursor: pointer;
+  background-color: #9d00ff;
+  top: 0;
+  right: 0;
+}
+
+.task-edit-form button:hover {
+  background-color: #3f0065;
+}
+
+.auth-links {
+  font-size: 0.5em;
+  position: absolute;
+  right: 25px;
+  
+}
+
+.auth-links a {
+  display: inline-block;
+  border: 2px white solid;
+  border-radius: 50px;
+  padding: 10px;
+}
+
+.auth-links a:hover {
+  background-color: #3f0065;
+}
+
+.auth-links button {
+  color: white;
+  background-color: #9d00ff;
+  border: 2px white solid;
+  border-radius: 50px;
+  padding: 10px;
+  font-weight: bolder;
+  font-size: 2em;
+}
+
+.auth-links button:hover {
+  background-color: #3f0065;
+}
+
+.auth-links span {
+  color: white;
+  background-color: #9d00ff;
+  padding: 10px;
+  font-weight: bolder;
+  font-size: 2em;
+  margin-right: 20px;
+}
+
+.signup-form p {
+  width: 50%;
+  text-align: center;
+  color: white;
+  margin: auto;
+  font-size: 0.8em;
+}
+
+.signup-form {
+  min-width: 25%;
+  max-width: 300px;
+}
+
+
+
