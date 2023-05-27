@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTasksContext } from "../hooks/useTasksContext";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { baseURL } from "../baseURL";
+
 const TaskEdit = ({ task, state }) => {
     const {dispatch} = useTasksContext();
     const [title, setTitle] = useState(task.title);
@@ -12,7 +12,7 @@ const TaskEdit = ({ task, state }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const upd_task = {title: title.trim(), time, date};
-        const response = await fetch(baseURL + '/api/tasks/' + task._id, {
+        const response = await fetch('/api/tasks/' + task._id, {
             method: 'PATCH',
             body: JSON.stringify(upd_task),
             headers: {

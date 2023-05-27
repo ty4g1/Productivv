@@ -3,7 +3,7 @@ import { useTasksContext } from '../hooks/useTasksContext';
 import { useState } from 'react';
 import TaskEdit from './TaskEdit';
 import { useAuthContext } from '../hooks/useAuthContext';
-import { baseURL } from "../baseURL";
+
 const TaskDesc = ({task}) => {
     const [edit, setEdit] = useState(false);
     const {dispatch} = useTasksContext();
@@ -12,7 +12,7 @@ const TaskDesc = ({task}) => {
         if (!user) {
             return 
         }
-        const response = await fetch(baseURL + '/api/tasks/' + task._id, {
+        const response = await fetch('/api/tasks/' + task._id, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${user.token}`

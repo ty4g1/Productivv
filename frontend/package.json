@@ -1,4 +1,5 @@
 {
+  "proxy": "https://productivv.onrender.com",
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
