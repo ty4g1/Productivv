@@ -12,7 +12,7 @@ const TaskEdit = ({ task, state }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const upd_task = {title: title.trim(), time, date};
-        const response = await fetch(baseURl + '/api/tasks/' + task._id, {
+        const response = await fetch(baseURL + '/api/tasks/' + task._id, {
             method: 'PATCH',
             body: JSON.stringify(upd_task),
             headers: {
