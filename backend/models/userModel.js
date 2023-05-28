@@ -43,7 +43,7 @@ userSchema.statics.signup = async function(email, pass) {
 //static login method
 userSchema.statics.login = async function(email, pass) {
     if (!(email && pass)) {
-        throw Error("All fields mus be filled");
+        throw Error("All fields must be filled");
     }
     if (!validator.isEmail(email)) {
         throw Error("Please enter a valid e-mail");
