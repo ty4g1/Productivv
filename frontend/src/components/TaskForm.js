@@ -5,8 +5,8 @@ import { useAuthContext } from "../hooks/useAuthContext";
 const TaskForm = () => {
     const {dispatch} = useTasksContext();
     const [title, setTitle] = useState('');
-    const [time, setTime] = useState('');
-    const [date, setDate] = useState('');
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
     const [error, setError] = useState(null);
     const { user } = useAuthContext();
     const handleSubmit = async (e) => {
@@ -15,7 +15,7 @@ const TaskForm = () => {
             setError('You must be logged in');
             return 
         }
-        const task = {title: title.trim(), time, date};
+        const task = {title: title.trim(), startTime, endTime};
         const response = await fetch('/api/tasks', {
             method: 'POST',
             body: JSON.stringify(task),
@@ -32,8 +32,8 @@ const TaskForm = () => {
         }
         if (response.ok) {
             setTitle('');
-            setTime('');
-            setDate('');
+            setStartTime('');
+            setEndTime('');
             setError(null);
             dispatch({type: 'CREATE_TASK', payload: json});
 
@@ -47,10 +47,10 @@ const TaskForm = () => {
                 <h2>Add new task</h2>
                 <label>Title</label>
                 <input type="text" required onChange={e => setTitle(e.target.value)} value={title}/>
-                <label>Time</label>
-                <input type="time" required onChange={e => setTime(e.target.value)} value={time}/>
-                <label>Date</label>
-                <input type="date" required onChange={e => setDate(e.target.value)} value={date}/>
+                <label>From</label>
+                <input type="datetime-local" required onChange={e => setStartTime(e.target.value)} value={startTime}/>
+                <label>To</label>
+                <input type="datetime-local" required onChange={e => setEndTime(e.target.value)} value={endTime}/>
                 <button>Add Task</button>
             </form>
             {error && <div className="error">{error}</div>}

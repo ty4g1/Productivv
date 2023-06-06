@@ -5,13 +5,13 @@ import { useAuthContext } from "../hooks/useAuthContext";
 const TaskEdit = ({ task, state }) => {
     const {dispatch} = useTasksContext();
     const [title, setTitle] = useState(task.title);
-    const [time, setTime] = useState(task.time);
-    const [date, setDate] = useState(task.date);
+    const [startTime, setStartTime] = useState(task.startTime);
+    const [endTime, setEndTime] = useState(task.endTime);
     const [error, setError] = useState(null);
     const { user } = useAuthContext();
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const upd_task = {title: title.trim(), time, date};
+        const upd_task = {title: title.trim(), startTime, endTime};
         const response = await fetch('/api/tasks/' + task._id, {
             method: 'PATCH',
             body: JSON.stringify(upd_task),
@@ -36,8 +36,8 @@ const TaskEdit = ({ task, state }) => {
         <div className="task-edit-form">
             <form onSubmit={handleSubmit}>
                 <input type="text" className="h2-upd" required onChange={e => setTitle(e.target.value)} value={title}/>
-                <input type="time" className="p-upd" required onChange={e => setTime(e.target.value)} value={time}/>
-                <input type="date" className="p-upd" required onChange={e => setDate(e.target.value)} value={date}/>
+                <input type="datetime-local" className="p-upd" required onChange={e => setStartTime(e.target.value)} value={startTime}/>
+                <input type="datetime-local" className="p-upd" required onChange={e => setEndTime(e.target.value)} value={endTime}/>
                 <button className="material-symbols-outlined">done</button>
             </form>
             {error && <div className="error">{error}</div>}

@@ -35,8 +35,8 @@ const TaskDesc = ({task}) => {
             {!edit && 
             <div>
                 <h2>{task.title}</h2>
-                <p>at {task.time}</p>
-                <p>on {format(new Date(task.date), 'do MMM, yyyy')}</p>
+                <p>from <b style={{color: "white"}}>{format(new Date(task.startTime), "hh:mm a")}</b> on <b style={{color: "white"}}>{format(new Date(task.startTime), "do MMM Y")}</b></p>
+                <p>to <b style={{color: "white"}}>{format(new Date(task.endTime), "hh:mm a")}</b> on <b style={{color: "white"}}>{format(new Date(task.endTime), "do MMM Y")}</b></p>
                 <span className="material-symbols-outlined delete" onClick={handleClickDel}>delete</span>
                 <span className="material-symbols-outlined edit" onClick={() => setEdit(true)}>edit</span>
             </div>}

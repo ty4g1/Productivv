@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 //get all tasks
 const getTasks = async (req, res) => {
     const user_id = req.user._id;
-    const tasks = await Task.find({user_id}).sort({date: 1, time: 1});
+    const tasks = await Task.find({user_id}).sort({startTime: 1});
     res.status(200).json(tasks);
 }
 
@@ -26,10 +26,10 @@ const getTask = async (req, res) => {
 
 const postTask = async (req, res) => {
     //add task to database
-    const {title, time, date} = req.body;
+    const {title, startTime, endTime} = req.body;
     try {
         const user_id = req.user._id;
-        const task = await Task.create({user_id, title, time, date});
+        const task = await Task.create({user_id, title, startTime, endTime});
         res.status(200).json(task);    //OK
     } catch (error) {
         res.status(400).json({error: error.message});       //Bad request

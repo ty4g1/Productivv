@@ -3,7 +3,6 @@ import TaskDesc from "../components/TaskDesc"
 import TaskForm from "../components/TaskForm";
 import { useTasksContext } from "../hooks/useTasksContext";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { Link } from "react-router-dom";
 
 const Home = () => {
     const {tasks, dispatch} = useTasksContext();
