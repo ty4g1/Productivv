@@ -11,9 +11,19 @@ export const tasksReducer = (state, action) => {
                 tasks: [action.payload, ...state.tasks]
             };
         }
+        case 'CREATE_TASKS': {
+            return {
+                tasks: [...action.payload, ...state.tasks]
+            };
+        }
         case 'DELETE_TASK': {
             return {
                 tasks: state.tasks.filter(task => task._id !== action.payload._id)
+            }
+        }
+        case 'DELETE_RECURRING_TASKS': {
+            return {
+                tasks: state.tasks.filter(task => task.recurr_id !== action.payload)
             }
         }
         case 'PATCH_TASK': {

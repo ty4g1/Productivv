@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useTasksContext } from "../hooks/useTasksContext";
 import { useAuthContext } from "../hooks/useAuthContext";
-
 const TaskEdit = ({ task, state }) => {
     const {dispatch} = useTasksContext();
     const [title, setTitle] = useState(task.title);
@@ -38,7 +37,7 @@ const TaskEdit = ({ task, state }) => {
                 <input type="text" className="h2-upd" required onChange={e => setTitle(e.target.value)} value={title}/>
                 <input type="datetime-local" className="p-upd" required onChange={e => setStartTime(e.target.value)} value={startTime}/>
                 <input type="datetime-local" className="p-upd" required onChange={e => setEndTime(e.target.value)} value={endTime}/>
-                <button className="material-symbols-outlined">done</button>
+                <button className="material-symbols-outlined done">done</button>
             </form>
             {error && <div className="error">{error}</div>}
         </div>

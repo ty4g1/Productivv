@@ -26,10 +26,13 @@ const getTask = async (req, res) => {
 
 const postTask = async (req, res) => {
     //add task to database
-    const {title, startTime, endTime} = req.body;
+    const {title, startTime, endTime, recurr_id} = req.body;
+    if (endTime < startTime) {
+        return res.status(400).json({error: "End time cannot be before start time!"});
+    }
     try {
         const user_id = req.user._id;
-        const task = await Task.create({user_id, title, startTime, endTime});
+        const task = await Task.create({user_id, title, startTime, endTime, recurr_id});
         res.status(200).json(task);    //OK
     } catch (error) {
         res.status(400).json({error: error.message});       //Bad request
@@ -50,6 +53,18 @@ const deleteTask = async (req, res) => {
     }
     res.status(200).json(task);
 }
+
+//delete recurring tasks
+const deleteRecurringTasks = async (req, res) => {
+    const id = req.params.id;
+    const del_tasks = await Task.deleteMany({recurr_id: id});
+    //if no such task is there
+    if (!del_tasks) {
+        return res.status(404).json({error: "No such task!"});
+    }
+    res.status(200).json(del_tasks);
+}
+
 //patch a task
 const patchTask = async (req, res) => {
     const id = req.params.id;
@@ -65,10 +80,12 @@ const patchTask = async (req, res) => {
     const upd_task = await Task.findOne({_id: id});
     res.status(200).json(upd_task);
 }
+
 module.exports = {
     getTasks,
     getTask,
     postTask,
     deleteTask,
+    deleteRecurringTasks,
     patchTask
 }

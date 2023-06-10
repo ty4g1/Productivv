@@ -8,6 +8,23 @@ const TaskDesc = ({task}) => {
     const [edit, setEdit] = useState(false);
     const {dispatch} = useTasksContext();
     const { user } = useAuthContext();
+    const deleteRecurring = async () => {
+        if (!user) {
+            return 
+        }
+        const response = await fetch('/api/tasks/recurring/' + task.recurr_id, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        });
+
+        const json = await response.json();
+
+        if (response.ok) {
+            dispatch({type: 'DELETE_RECURRING_TASKS', payload: task.recurr_id});
+        }
+    }
     const handleClickDel = async () => {
         if (!user) {
             return 
@@ -23,6 +40,10 @@ const TaskDesc = ({task}) => {
 
         if (response.ok) {
             dispatch({type: 'DELETE_TASK', payload: json});
+        }
+
+        if (task.recurr_id) {
+            window.confirm('This is a recurring task. Do you want to delete all recurring tasks?') && deleteRecurring();
         }
     }
     return (

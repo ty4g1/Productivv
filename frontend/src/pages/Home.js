@@ -31,7 +31,6 @@ const Home = () => {
     return ( 
         <div className="home">
             <div className="tasks">
-                {console.log(tasks)}
                 {(!tasks || !tasks.length) && <div className="no-tasks">
                     <h1>Get started!</h1>
                     <p>Add some tasks</p>

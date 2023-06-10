@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { useTasksContext } from "../hooks/useTasksContext";
 import { useAuthContext } from "../hooks/useAuthContext";
+import RecurringForm from "../pages/RecurringForm";
+import { Link } from "react-router-dom";
 
 const TaskForm = () => {
     const {dispatch} = useTasksContext();
     const [title, setTitle] = useState('');
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
+    const [recurring, setRecurring] = useState(false);
     const [error, setError] = useState(null);
     const { user } = useAuthContext();
     const handleSubmit = async (e) => {
@@ -15,6 +18,11 @@ const TaskForm = () => {
             setError('You must be logged in');
             return 
         }
+        if (title.trim() === '') {
+            setError('Title cannot be empty');
+            return
+        }
+
         const task = {title: title.trim(), startTime, endTime};
         const response = await fetch('/api/tasks', {
             method: 'POST',
@@ -38,6 +46,7 @@ const TaskForm = () => {
             dispatch({type: 'CREATE_TASK', payload: json});
 
         }
+        
     }
 
     return ( 

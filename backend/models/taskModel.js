@@ -18,6 +18,9 @@ const taskSchema = new Schema({
     endTime: {
         type: String,
         required: true
+    },
+    recurr_id: {
+        type: String
     }
 }, {timestamps: true});
 

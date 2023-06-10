@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import MyCalendar from './pages/Calendar';
 import MenuBar from './components/MenuBar';
+import RecurringForm from './pages/RecurringForm';
 function App() {
   const { user } = useAuthContext();
   return (
@@ -18,6 +19,7 @@ function App() {
           <Routes>
             <Route exact path='/' element={user ? <Home /> : <Navigate to='/login'/>} />
             <Route exact path='/calendar' element={user ? <MyCalendar /> : <Navigate to='/login'/>} />
+            <Route exact path='/form-recurring' element={user ? <RecurringForm /> : <Navigate to='/login'/>} />
             <Route exact path='/login' element={!user ? <Login /> : <Navigate to='/'/>} />
             <Route exact path='/signup' element={!user ? <Signup /> : <Navigate to='/'/>} />
           </Routes>

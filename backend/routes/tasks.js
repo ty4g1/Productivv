@@ -4,6 +4,7 @@ const {
     getTask,
     postTask,
     deleteTask,
+    deleteRecurringTasks,
     patchTask
 } = require('../controllers/taskController');
 const { requireAuth } = require('../middleware/requireAuth');
@@ -24,6 +25,9 @@ router.post('/', postTask);
 
 //delete a task
 router.delete('/:id', deleteTask);
+
+//delete recurring tasks
+router.delete('/recurring/:id', deleteRecurringTasks);
 
 //patch a task
 router.patch('/:id', patchTask);
