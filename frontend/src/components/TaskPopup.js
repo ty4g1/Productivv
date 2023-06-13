@@ -1,7 +1,6 @@
 import TaskDesc from "../components/TaskDesc"
 import { useAuthContext } from "../hooks/useAuthContext";
-import { useEffect, useState } from "react";
-import { useTasksContext } from "../hooks/useTasksContext";
+import { useState } from "react";
 
 const TaskPopup = ({task, state}) => {
     const [event, setEvent] = useState(task);

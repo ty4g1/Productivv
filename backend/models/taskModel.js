@@ -21,6 +21,9 @@ const taskSchema = new Schema({
     },
     recurr_id: {
         type: String
+    },
+    color: {
+        type: String
     }
 }, {timestamps: true});
 

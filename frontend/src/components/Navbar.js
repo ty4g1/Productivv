@@ -8,7 +8,7 @@ const Navbar = () => {
         logout();
     }
     return ( 
-        <nav>
+        <nav className='navbar'>
             <div className="container">
                 <Link to='/'>
                     <h1>Productivv</h1>

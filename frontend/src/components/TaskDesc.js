@@ -19,8 +19,6 @@ const TaskDesc = ({task}) => {
             }
         });
 
-        const json = await response.json();
-
         if (response.ok) {
             dispatch({type: 'DELETE_RECURRING_TASKS', payload: task.recurr_id});
         }
@@ -47,7 +45,7 @@ const TaskDesc = ({task}) => {
         }
     }
     return (
-        <div className="task-desc">
+        <div className="task-desc" style={{backgroundColor: task.color}}>
             {edit && 
             <div>
                 <TaskEdit task={task} state={{edit, setEdit}}></TaskEdit>

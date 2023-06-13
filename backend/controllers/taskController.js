@@ -26,13 +26,13 @@ const getTask = async (req, res) => {
 
 const postTask = async (req, res) => {
     //add task to database
-    const {title, startTime, endTime, recurr_id} = req.body;
+    const {title, startTime, endTime, recurr_id, color} = req.body;
     if (endTime < startTime) {
         return res.status(400).json({error: "End time cannot be before start time!"});
     }
     try {
         const user_id = req.user._id;
-        const task = await Task.create({user_id, title, startTime, endTime, recurr_id});
+        const task = await Task.create({user_id, title, startTime, endTime, recurr_id, color});
         res.status(200).json(task);    //OK
     } catch (error) {
         res.status(400).json({error: error.message});       //Bad request

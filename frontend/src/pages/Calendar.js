@@ -49,7 +49,8 @@ const MyCalendar = () => {
             title: task.title,
             startTime: new Date(task.startTime),
             endTime: new Date(task.endTime),
-            recurr_id: task.recurr_id
+            recurr_id: task.recurr_id,
+            color: task.color
         }
     });
     
@@ -64,7 +65,8 @@ const MyCalendar = () => {
                 style={{height: 500, margin: "50px"}}
                 views={[Views.MONTH, Views.WEEK, Views.DAY]}
                 eventPropGetter={(event) => {
-                    return { style: { backgroundColor: "#9d00ff", fontWeight: "bolder", border: "2px solid #3f0065", color: "white", borderRadius: "10px"} }
+                    console.log(event);
+                    return { style: { backgroundColor: event.color || '#9d00ff', fontWeight: "bolder", border: "2px solid black", color: "white", borderRadius: "10px"} }
                   }}
                 onDoubleClickEvent={(event) => {
                     setSelectedTask({...event, 

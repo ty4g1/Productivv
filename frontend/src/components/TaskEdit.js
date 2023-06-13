@@ -32,7 +32,7 @@ const TaskEdit = ({ task, state }) => {
         }
     }
     return ( 
-        <div className="task-edit-form">
+        <div className="task-edit-form" style={{backgroundColor: task.color}}>
             <form onSubmit={handleSubmit}>
                 <input type="text" className="h2-upd" required onChange={e => setTitle(e.target.value)} value={title}/>
                 <input type="datetime-local" className="p-upd" required onChange={e => setStartTime(e.target.value)} value={startTime}/>
