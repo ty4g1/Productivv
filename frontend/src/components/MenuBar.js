@@ -6,6 +6,8 @@ const MenuBar = () => {
                 <Link to='/'><span class="material-symbols-outlined" style={{color: 'white', fontSize: '1.5em'}}>receipt_long</span></Link>
                 <Link to='/calendar'><span class="material-symbols-outlined" style={{color: 'white', fontSize: '1.5em'}}>calendar_month</span></Link>
                 <Link to='/form-recurring'>Create Recurring Tasks</Link>
+                <Link to='/completed'>Completed Tasks</Link>
+                <Link to='/past-due'>Past Due Tasks</Link>
             </div>
         </nav>
      );

@@ -24,6 +24,18 @@ const taskSchema = new Schema({
     },
     color: {
         type: String
+    },
+    completed: {
+        type: Boolean,
+        default: false
+    },
+    tags: {
+        type: Array,
+        default: []
+    },
+    priority: {
+        type: Number,
+        default: 50
     }
 }, {timestamps: true});
 

@@ -8,6 +8,8 @@ import Signup from './pages/Signup';
 import MyCalendar from './pages/Calendar';
 import MenuBar from './components/MenuBar';
 import RecurringForm from './pages/RecurringForm';
+import Completed from './pages/Completed';
+import PastDue from './pages/PastDue';
 function App() {
   const { user } = useAuthContext();
   return (
@@ -20,6 +22,8 @@ function App() {
             <Route exact path='/' element={user ? <Home /> : <Navigate to='/login'/>} />
             <Route exact path='/calendar' element={user ? <MyCalendar /> : <Navigate to='/login'/>} />
             <Route exact path='/form-recurring' element={user ? <RecurringForm /> : <Navigate to='/login'/>} />
+            <Route exact path='/completed' element={user ? <Completed /> : <Navigate to='/login'/>} />
+            <Route exact path='/past-due' element={user ? <PastDue /> : <Navigate to='/login'/>} />
             <Route exact path='/login' element={!user ? <Login /> : <Navigate to='/'/>} />
             <Route exact path='/signup' element={!user ? <Signup /> : <Navigate to='/'/>} />
           </Routes>

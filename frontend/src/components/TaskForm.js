@@ -2,6 +2,30 @@ import { useState } from "react";
 import { useTasksContext } from "../hooks/useTasksContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 import {CirclePicker} from 'react-color';
+import CreatableSelect from 'react-select/creatable';
+import Slider from '@mui/material/Slider';
+
+const options = [
+    { value: 'Recreation', label: 'Reacreation' },
+    { value: 'Work', label: 'Work' },
+    { value: 'School', label: 'School' },
+    { value: 'Exercise', label: 'Exercise' }
+]
+
+const marks = [
+    {
+      value: 0,
+      label: 'Low',
+    },
+    {
+      value: 50,
+      label: 'Medium',
+    },
+    {
+      value: 100,
+      label: 'High',
+    }
+];
 
 const TaskForm = () => {
     const {dispatch} = useTasksContext();
@@ -11,6 +35,8 @@ const TaskForm = () => {
     const [error, setError] = useState(null);
     const [color, setColor] = useState('#000000');
     const { user } = useAuthContext();
+    const [tags, setTags] = useState([]);
+    const [priority, setPriority] = useState(50);
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!user) {
@@ -22,7 +48,7 @@ const TaskForm = () => {
             return
         }
 
-        const task = {title: title.trim(), startTime, endTime, color};
+        const task = {title: title.trim(), startTime, endTime, color, tags: tags.map(tag => tag.value), priority};
         const response = await fetch('/api/tasks', {
             method: 'POST',
             body: JSON.stringify(task),
@@ -43,11 +69,14 @@ const TaskForm = () => {
             setEndTime('');
             setColor('#000000');
             setError(null);
+            setTags([]);
+            setPriority(50);
             dispatch({type: 'CREATE_TASK', payload: json});
 
         }
         
     }
+
 
     return ( 
         
@@ -62,11 +91,15 @@ const TaskForm = () => {
                 <input type="datetime-local" required onChange={e => setEndTime(e.target.value)} value={endTime}/>
                 <label>Task Color</label>
                 <div style={{backgroundColor: 'white', padding: '10px', marginTop: '10px', borderRadius: '20px'}}><CirclePicker color={color} onChangeComplete={(color) => setColor(color.hex)}/></div>
-                {console.log(color)}
+                <label style={{marginTop: '10px'}}>Tags</label>
+                <div style={{marginTop: '10px'}}><CreatableSelect value={tags} className='tags' options={options} closeMenuOnSelect={true} onChange={setTags} isMulti={true}></CreatableSelect></div>
+                <label style={{marginTop: '10px'}}>Priority</label>
+                <div style={{backgroundColor: 'white', padding: '10px 40px', marginTop: '10px', borderRadius: '20px'}}><Slider value={priority} onChange={(event, value, activeThumb) => setPriority(value)} marks={marks} color='secondary'></Slider></div>
                 <button>Add Task</button>
             </form>
             {error && <div className="error">{error}</div>}
         </div>
+        
         
      );
 }

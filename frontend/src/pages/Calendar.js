@@ -50,7 +50,10 @@ const MyCalendar = () => {
             startTime: new Date(task.startTime),
             endTime: new Date(task.endTime),
             recurr_id: task.recurr_id,
-            color: task.color
+            color: task.color,
+            completed: task.completed,
+            tags: task.tags,
+            priority: task.priority
         }
     });
     
@@ -59,7 +62,7 @@ const MyCalendar = () => {
         <div className="calendar">
             <div>
             <Calendar localizer={localizer}
-                events={alltasks}
+                events={alltasks.filter((task) => !task.completed)}
                 startAccessor="startTime"
                 endAccessor="endTime"
                 style={{height: 500, margin: "50px"}}

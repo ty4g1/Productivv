@@ -26,13 +26,13 @@ const getTask = async (req, res) => {
 
 const postTask = async (req, res) => {
     //add task to database
-    const {title, startTime, endTime, recurr_id, color} = req.body;
+    const {title, startTime, endTime, recurr_id, color, tags, priority} = req.body;
     if (endTime < startTime) {
         return res.status(400).json({error: "End time cannot be before start time!"});
     }
     try {
         const user_id = req.user._id;
-        const task = await Task.create({user_id, title, startTime, endTime, recurr_id, color});
+        const task = await Task.create({user_id, title, startTime, endTime, recurr_id, color, tags, priority});
         res.status(200).json(task);    //OK
     } catch (error) {
         res.status(400).json({error: error.message});       //Bad request
@@ -57,7 +57,7 @@ const deleteTask = async (req, res) => {
 //delete recurring tasks
 const deleteRecurringTasks = async (req, res) => {
     const id = req.params.id;
-    const del_tasks = await Task.deleteMany({recurr_id: id});
+    const del_tasks = await Task.deleteMany({recurr_id: id, completed: false});
     //if no such task is there
     if (!del_tasks) {
         return res.status(404).json({error: "No such task!"});
@@ -68,9 +68,13 @@ const deleteRecurringTasks = async (req, res) => {
 //patch a task
 const patchTask = async (req, res) => {
     const id = req.params.id;
+    const {startTime, endTime} = req.body;
     //if id is invalid
     if(!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({error: "No such task!"});
+    }
+    if (endTime < startTime) {
+        return res.status(400).json({error: "End time cannot be before start time!"});
     }
     const task = await Task.findOneAndUpdate({_id: id}, {$set: req.body});
     //if no such task is there

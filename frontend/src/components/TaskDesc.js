@@ -27,6 +27,9 @@ const TaskDesc = ({task}) => {
         if (!user) {
             return 
         }
+        if (!window.confirm('Are you sure you want to delete this task?')) {
+            return
+        }
         const response = await fetch('/api/tasks/' + task._id, {
             method: 'DELETE',
             headers: {
@@ -40,24 +43,51 @@ const TaskDesc = ({task}) => {
             dispatch({type: 'DELETE_TASK', payload: json});
         }
 
-        if (task.recurr_id) {
+        if (!task.completed && task.recurr_id) {
             window.confirm('This is a recurring task. Do you want to delete all recurring tasks?') && deleteRecurring();
         }
     }
+    const handleClickComplete = async () => {
+        if (!user) {
+            return
+        }
+        const response = await fetch('/api/tasks/' + task._id, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            },
+            body: JSON.stringify({completed: true})
+        });
+
+        const json = await response.json();
+
+        if (response.ok) {
+            dispatch({type: 'PATCH_TASK', payload: json});
+        }
+    }
+
     return (
         <div className="task-desc" style={{backgroundColor: task.color}}>
-            {edit && 
+            {edit &&
             <div>
                 <TaskEdit task={task} state={{edit, setEdit}}></TaskEdit>
                 <span className="material-symbols-outlined edit" onClick={() => setEdit(false)}>close</span>
             </div>}
-            {!edit && 
+            {!edit &&
             <div>
                 <h2>{task.title}</h2>
                 <p>from <b style={{color: "white"}}>{format(new Date(task.startTime), "hh:mm a")}</b> on <b style={{color: "white"}}>{format(new Date(task.startTime), "do MMM Y")}</b></p>
                 <p>to <b style={{color: "white"}}>{format(new Date(task.endTime), "hh:mm a")}</b> on <b style={{color: "white"}}>{format(new Date(task.endTime), "do MMM Y")}</b></p>
+                <p>Tags: {task.tags.map(tag => <b key={tag} className="tag" style={{color: 'white'}}>{tag}</b>)}</p>
+                <p>Priority Score: <b style={{color: "white"}}>{task.priority} ({task.priority < 25 ? 'Low' : task.priority < 75 ? 'Medium' : 'High'})</b></p>
                 <span className="material-symbols-outlined delete" onClick={handleClickDel}>delete</span>
-                <span className="material-symbols-outlined edit" onClick={() => setEdit(true)}>edit</span>
+                {!task.completed && 
+                <div>
+                    <button className="complete" onClick={handleClickComplete}>Mark as complete</button>
+                    <span className="material-symbols-outlined edit" onClick={() => setEdit(true)}>edit</span>
+                </div>}
+                
             </div>}
         </div>
      );

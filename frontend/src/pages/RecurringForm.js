@@ -6,15 +6,39 @@ import {useTasksContext} from '../hooks/useTasksContext'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useNavigate } from "react-router-dom";
 import {CirclePicker} from 'react-color';
+import CreatableSelect from 'react-select/creatable';
+import Slider from '@mui/material/Slider'
 
 const options = [
     { value: 'daily', label: 'Daily' },
     { value: 'weekly', label: 'Weekly' },
     { value: 'monthly', label: 'Monthly' },
     { value: 'yearly', label: 'Yearly' }
-]
+];
 
-const createTasks = (title, freq, start, end, startDate, endDate, color) => {
+const tagoptions = [
+    { value: 'Recreation', label: 'Reacreation' },
+    { value: 'Work', label: 'Work' },
+    { value: 'School', label: 'School' },
+    { value: 'Exercise', label: 'Exercise' }
+];
+
+const marks = [
+    {
+      value: 0,
+      label: 'Low',
+    },
+    {
+      value: 50,
+      label: 'Medium',
+    },
+    {
+      value: 100,
+      label: 'High',
+    }
+];
+
+const createTasks = (title, freq, start, end, startDate, endDate, color, tags, priority) => {
     const uniqueId = () => {
         const dateString = Date.now().toString(36);
         const randomness = Math.random().toString(36).substr(2);
@@ -45,7 +69,9 @@ const createTasks = (title, freq, start, end, startDate, endDate, color) => {
                       startTime: format(currDate, "yyyy-MM-dd") + ' ' + start, 
                       endTime: format(currDate, "yyyy-MM-dd") + ' ' + end,
                       recurr_id: recurr_id,
-                      color: color};
+                      color: color,
+                      tags: tags.map(tag => tag.value),
+                      priority: priority,};
         tasks.push(task);
         inc(currDate);
     }
@@ -63,10 +89,12 @@ const RecurringForm = () => {
     const [title, setTitle] = useState('');
     const [error, setError] = useState(null);
     const [color, setColor] = useState('#000000');
+    const [tags, setTags] = useState([]);
+    const [priority, setPriority] = useState(50);
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const tasks = createTasks(title, freq.value, start, end, startDate, endDate, color);
+        const tasks = createTasks(title, freq.value, start, end, startDate, endDate, color, tags, priority);
         tasks.forEach(async task => {
             console.log(task);
             const response = await fetch('/api/tasks', {
@@ -87,6 +115,8 @@ const RecurringForm = () => {
                 setStartDate('');
                 setEndDate('');
                 setTitle('');
+                setTags([]);
+                setPriority(50);
                 dispatch({type: 'CREATE_TASK', payload: json});
                 navigate('/calendar', {replace: true});
             }
@@ -96,20 +126,24 @@ const RecurringForm = () => {
     <form onSubmit={handleSubmit} className='task-form-recurring'>
         <h2>Add new recurring tasks</h2>
         <div className='task-form-recurring-content'>
-        <label>Title</label>
-        <input type="text" required onChange={e => setTitle(e.target.value)} value={title}/>
-        <label>Frequency</label>
-        <Select value={freq} className='freq' options={options} closeMenuOnSelect={true} onChange={setFreq} isSearchable={false}/>
-        <label>Time</label>
-        <input type="time" required onChange={e => setStart(e.target.value)} value={start}/> <br />
-        <label className='to' style={{fontSize: '1em'}}>to</label> <br />
-        <input type="time" required onChange={e => setEnd(e.target.value)} value={end}/>
-        <label>Date range</label>
-        <input type="date" required onChange={e => setStartDate(e.target.value)} value={startDate}/> <br />
-        <label className='to' style={{fontSize: '1em'}}>to</label> <br />
-        <input type="date" required onChange={e => setEndDate(e.target.value)} value={endDate}/>
-        <label>Task Color</label>
-        <div style={{backgroundColor: 'white', padding: '10px', marginTop: '10px', borderRadius: '20px'}}><CirclePicker color={color} onChangeComplete={(color) => setColor(color.hex)}/></div>
+            <label>Title</label>
+            <input type="text" required onChange={e => setTitle(e.target.value)} value={title}/>
+            <label>Frequency</label>
+            <Select value={freq} className='freq' options={options} closeMenuOnSelect={true} onChange={setFreq} isSearchable={false} required/>
+            <label>Time</label>
+            <input type="time" required onChange={e => setStart(e.target.value)} value={start}/> <br />
+            <label className='to' style={{fontSize: '1em'}}>to</label> <br />
+            <input type="time" required onChange={e => setEnd(e.target.value)} value={end}/>
+            <label>Date range</label>
+            <input type="date" required onChange={e => setStartDate(e.target.value)} value={startDate}/> <br />
+            <label className='to' style={{fontSize: '1em'}}>to</label> <br />
+            <input type="date" required onChange={e => setEndDate(e.target.value)} value={endDate}/>
+            <label>Task Color</label>
+            <div style={{backgroundColor: 'white', padding: '10px', marginTop: '10px', borderRadius: '20px'}}><CirclePicker color={color} onChangeComplete={(color) => setColor(color.hex)}/></div>
+            <label style={{marginTop: '20px'}}>Tags</label>
+            <div style={{marginTop: '20px'}}><CreatableSelect  value={tags} className='tags' options={tagoptions} closeMenuOnSelect={true} onChange={setTags} isMulti={true}></CreatableSelect></div>
+            <label style={{marginTop: '10px'}}>Priority</label>
+            <div style={{backgroundColor: 'white', padding: '10px 40px', marginTop: '10px', borderRadius: '20px'}}><Slider value={priority} onChange={(event, value, activeThumb) => setPriority(value)} marks={marks} color='secondary'></Slider></div>
         </div>
         <button type="submit">Add</button>
         {error && <p>{error}</p>}

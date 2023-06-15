@@ -23,7 +23,7 @@ export const tasksReducer = (state, action) => {
         }
         case 'DELETE_RECURRING_TASKS': {
             return {
-                tasks: state.tasks.filter(task => task.recurr_id !== action.payload)
+                tasks: state.tasks.filter(task => (task.completed || task.recurr_id !== action.payload) )
             }
         }
         case 'PATCH_TASK': {

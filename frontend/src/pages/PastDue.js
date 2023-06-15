@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import TaskDesc from "../components/TaskDesc"
-import TaskForm from "../components/TaskForm";
 import { useTasksContext } from "../hooks/useTasksContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 
-const Home = () => {
+const PastDue = () => {
     const {tasks, dispatch} = useTasksContext();
     const { user } = useAuthContext();
     useEffect(() => {
@@ -27,25 +26,21 @@ const Home = () => {
         
         
     }, [dispatch, user]);
-
     return ( 
-        <div className="home">
+        <div className="pastdue">
             <div className="tasks">
-                {(!tasks || !tasks.length ||
-                  !tasks.filter((task) => !task.completed) || !tasks.filter((task) => !task.completed).length) && 
+            {(!tasks.filter((task) => new Date(task.endTime) < new Date()) 
+              || !tasks.filter((task) => new Date(task.endTime) < new Date()).length) && 
                 <div className="no-tasks">
-                    <h1>Get started!</h1>
-                    <p>Add some tasks</p>
+                    <h1>Well done!</h1>
+                    <p>No missed tasks</p>
                 </div>}
                 {tasks && tasks.map(task => (
-                    (task.completed || (new Date(task.endTime) < new Date())) ? null : <TaskDesc key={task._id} task={task} /> 
+                    !(new Date(task.endTime) < new Date()  && !task.completed) ? null : <TaskDesc key={task._id} task={task} /> 
                 ))}
-                
-                
             </div>
-            <TaskForm />
         </div>
      );
 }
  
-export default Home;
+export default PastDue;

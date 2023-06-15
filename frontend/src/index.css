@@ -34,7 +34,6 @@
   margin: 0 auto;
   padding: 50px;
   position: relative;
-  top: 120px
 }
 .home {
   display: grid;
@@ -66,6 +65,22 @@
   color: white;
 }
 
+.task-desc button {
+  background-color: #ffffff00;
+  color: white;
+  border: 2px solid white;
+  border-radius: 20px;
+  margin-top: 10px;
+  font-size: 0.9em;
+  font-weight: bold;
+  padding: 5px;
+}
+
+.task-desc button:hover {
+  background-color: #00000040;
+  cursor: pointer;
+}
+
 .task-form-recurring, .task-form, .login-form, .signup-form {
   margin: 10px auto;
   padding: 30px;
@@ -83,7 +98,7 @@
   margin-bottom: 20px;
 }
 
-.task-form-recurring .freq, .task-form-recurring label, .task-form-recurring-p1 input, .task-form label, .task-form input, .login-form label, .login-form input, .signup-form input, .signup-form label {
+.task-form-recurring .freq,.task-form-recurring .tags, .task-form-recurring label, .task-form-recurring-p1 input, .task-form label, .task-form input, .login-form label, .login-form input, .signup-form input, .signup-form label {
   display: block;
 }
 
@@ -354,7 +369,15 @@
   z-index: 10;
 }
 
-
+.completed .note {
+  text-align: center;
+  border: 2px rgb(255, 123, 0) solid;
+  background-color: rgba(255, 123, 0, 0.449);
+  padding: 10px;
+  margin: auto;
+  width: fit-content;
+  border-radius: 20px;
+}
 
 
 
