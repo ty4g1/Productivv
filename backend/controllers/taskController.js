@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 //get all tasks
 const getTasks = async (req, res) => {
     const user_id = req.user._id;
-    const tasks = await Task.find({user_id}).sort({startTime: 1});
+    const tasks = await Task.find({user_id});
     res.status(200).json(tasks);
 }
 

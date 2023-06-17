@@ -369,13 +369,41 @@
   z-index: 10;
 }
 
-.completed .note {
+.note {
   text-align: center;
   border: 2px rgb(255, 123, 0) solid;
   background-color: rgba(255, 123, 0, 0.449);
   padding: 10px;
   margin: auto;
   width: fit-content;
+  border-radius: 20px;
+}
+
+.searchbar {
+  background-color: #9d00ff;
+  padding: 30px;
+  text-align: center;
+  border-radius: 20px;
+  margin-top: 10px
+}
+.searchbar input {
+  display: block;
+  border: rgb(227, 227, 227) solid 5px;
+  border-radius: 50px;
+  width: 75%;
+  margin: 10px auto;
+  font-size: 1.2em;
+  padding: 5px;
+}
+
+.searchbar .filter-sort {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border: 5px solid black;
+  font-weight: bolder;
+  background-color: white;
   border-radius: 20px;
 }
 

@@ -68,7 +68,6 @@ const MyCalendar = () => {
                 style={{height: 500, margin: "50px"}}
                 views={[Views.MONTH, Views.WEEK, Views.DAY]}
                 eventPropGetter={(event) => {
-                    console.log(event);
                     return { style: { backgroundColor: event.color || '#9d00ff', fontWeight: "bolder", border: "2px solid black", color: "white", borderRadius: "10px"} }
                   }}
                 onDoubleClickEvent={(event) => {

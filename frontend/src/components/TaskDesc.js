@@ -79,7 +79,7 @@ const TaskDesc = ({task}) => {
                 <h2>{task.title}</h2>
                 <p>from <b style={{color: "white"}}>{format(new Date(task.startTime), "hh:mm a")}</b> on <b style={{color: "white"}}>{format(new Date(task.startTime), "do MMM Y")}</b></p>
                 <p>to <b style={{color: "white"}}>{format(new Date(task.endTime), "hh:mm a")}</b> on <b style={{color: "white"}}>{format(new Date(task.endTime), "do MMM Y")}</b></p>
-                <p>Tags: {task.tags.map(tag => <b key={tag} className="tag" style={{color: 'white'}}>{tag}</b>)}</p>
+                <p style={{margin: '10px 0px'}}>Tags: {task.tags.map(tag => <b key={tag} className="tag" style={{color: 'white', border: '1px white solid', margin: '5px', padding: '5px', borderRadius: '20px'}}>{tag} </b>)}</p>
                 <p>Priority Score: <b style={{color: "white"}}>{task.priority} ({task.priority < 25 ? 'Low' : task.priority < 75 ? 'Medium' : 'High'})</b></p>
                 <span className="material-symbols-outlined delete" onClick={handleClickDel}>delete</span>
                 {!task.completed && 
