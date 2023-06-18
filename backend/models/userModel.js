@@ -12,6 +12,10 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    tele_id: {
+        type: String,
+        required: false
     }
 });
 
@@ -57,6 +61,17 @@ userSchema.statics.login = async function(email, pass) {
     const match = await bcrypt.compare(pass, user.password);
     if (!match) {
         throw Error('Incorrect email or password');
+    }
+    return user;
+}
+
+userSchema.statics.find = async function(tele_id) {
+    if (!tele_id) {
+        throw Error(`All fields must be filled ${tele_id}`);
+    }
+    const user = await this.findOne({tele_id: tele_id});
+    if (!user) {
+        throw Error('Incorrect telegram username');
     }
     return user;
 }

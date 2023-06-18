@@ -30,8 +30,21 @@ const signupUser = async (req, res) => {
     }
 };
 
-
+//find user (for bot)
+const findUser = async (req, res) => {
+    const username = req.params.username;
+    console.log(username);
+    try {
+        const user = await User.find(username);
+        const token = createToken(user._id);
+        res.status(200).json({username, token});
+    } catch (error) {
+        res.status(400).json({error: error.message});
+    }
+};
+ 
 module.exports = {
     signupUser,
-    loginUser
+    loginUser,
+    findUser
 };
