@@ -16,6 +16,10 @@ const userSchema = new Schema({
     tele_id: {
         type: String,
         required: false
+    },
+    username: {
+        type: String,
+        required: false
     }
 });
 
@@ -40,7 +44,7 @@ userSchema.statics.signup = async function(email, pass) {
     const salt = await bcrypt.genSalt(10);   //append to end of password so idenctical passwords have different hashes
     const hash = await bcrypt.hash(pass, salt);
 
-    const user = await this.create({email, password: hash});
+    const user = await this.create({email, password: hash, username: email.split('@')[0]});
     return user;
 }
 
@@ -75,5 +79,28 @@ userSchema.statics.find = async function(tele_id) {
     }
     return user;
 }
+
+userSchema.statics.profile = async function(email) {
+    if (!email) {
+        throw Error(`All fields must be filled`);
+    }
+    const user = await this.findOne({email: email});
+    if (!user) {
+        throw Error('Incorrect email');
+    }
+    return user;
+}
+
+userSchema.statics.updateProfile = async function(body) {
+    if (!body) {
+        throw Error(`All fields must be filled`);
+    }
+    const user = await this.findOneAndUpdate({email: body.email}, {username: body.username, tele_id: body.tele_id});
+    if (!user) {
+        throw Error('Incorrect email');
+    }
+    return user;
+}
+
 
 module.exports = mongoose.model('User', userSchema);

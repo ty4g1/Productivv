@@ -21,7 +21,7 @@ const fetchUser = async (username) => {
 }
 
 const fetchTasks = async (token) => {
-    const response = await fetch('https://productivv.onrender.com/api/tasks', {
+    const response = await fetch('http://localhost:4000/api/tasks', {
         headers: {
             'Authorization': `Bearer ${token}`
         }

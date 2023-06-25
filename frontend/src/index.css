@@ -407,5 +407,109 @@
   border-radius: 20px;
 }
 
+.userprofile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
 
+.userprofile h1 {
+  font-size: 3em;
+  font-weight: bolder;
+  margin-bottom: 30px;
+  color: #9d00ff;
+}
 
+.userprofile h2 {
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.userprofile h2 b {
+  color: #9d00ff;
+  margin-right: 10px;
+}
+
+.userprofile h2 span{
+  font-size: 1.1em;
+  padding: 7px;
+  color: white;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  background-color: #9d00ff;
+  margin-left: 100px;
+}
+
+.userprofile h2 span:hover {
+  background-color: #3f0065;
+}
+
+.editProfile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.editProfile form {
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.editProfile label {
+  font-size: 1.5em;
+  font-weight: bolder;
+  color: #9d00ff;
+  margin-right: 10px;
+}
+
+.editProfile input {
+  font-size: 1.5em;
+  padding: 10px;
+  color: white;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  background-color: #9d00ff;
+  border: 2px solid #3f0065;
+}
+
+.editProfile input:focus {
+  background-color: #3f0065;
+}
+
+.editProfile button {
+  font-size: 1.6em;
+  padding: 7px;
+  color: white;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  background-color: #9d00ff;
+  margin-left: 100px;
+  border: none;
+}
+
+.editProfile button:hover {
+  background-color: #3f0065;
+}
+
+.userprofile .change-pass {
+  color: white;
+  background-color: #9d00ff;
+  padding: 10px;
+  border-radius: 50px;
+  font-size: 1.2em;
+  width: fit-content;
+  border: #3f0065 solid 2px;
+  cursor: pointer;
+}
+
+.userprofile .change-pass:hover {
+  background-color: #3f0065;
+}
+
+.userprofile .pass-form {
+  
+}

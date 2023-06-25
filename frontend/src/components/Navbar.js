@@ -16,7 +16,7 @@ const Navbar = () => {
                 <div className='auth-links'>
                     {user && (
                     <div>
-                        <span>{user.email}</span>
+                        <span><Link to='/user-profile' style={{color: 'white'}}>User Profile</Link></span>
                         <button onClick={handleClick}>Log out</button>
                     </div>)}
                     {!user && (

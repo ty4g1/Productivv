@@ -58,7 +58,6 @@ const SearchBar = () => {
                 }
             });
             dispatch({type: 'SET_FILTERED_TASKS', payload: sorted_tasks});
-            console.log(filtered);
         }
         if (user) {
             fetchFilteredTasks();

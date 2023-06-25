@@ -12,7 +12,7 @@ const loginUser = async (req, res) => {
     try {
         const user = await User.login(email, password);
         const token = createToken(user._id);
-        res.status(200).json({email, token});
+        res.status(200).json({username: user.username, email, token});
     } catch (error) {
         res.status(400).json({error: error.message});
     }
@@ -24,7 +24,7 @@ const signupUser = async (req, res) => {
     try {
         const user = await User.signup(email, password);
         const token = createToken(user._id);
-        res.status(200).json({email, token});
+        res.status(200).json({username: user.username, email, token});
     } catch (error) {
         res.status(400).json({error: error.message});
     }
@@ -42,9 +42,34 @@ const findUser = async (req, res) => {
         res.status(400).json({error: error.message});
     }
 };
+
+//get user profile
+const getUserProfile = async (req, res) => {
+    const {email} = req.body;
+    console.log(email);
+    try {
+        const user = await User.profile(email);
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(400).json({error: error.message});
+    }
+};
+
+//update user profile
+const updateUserProfile = async (req, res) => {
+    const body = req.body;
+    try {
+        const user = await User.updateProfile(body);
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(400).json({error: error.message});
+    }
+}
  
 module.exports = {
     signupUser,
     loginUser,
-    findUser
+    findUser,
+    getUserProfile,
+    updateUserProfile
 };

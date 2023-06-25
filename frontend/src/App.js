@@ -10,6 +10,7 @@ import MenuBar from './components/MenuBar';
 import RecurringForm from './pages/RecurringForm';
 import Completed from './pages/Completed';
 import PastDue from './pages/PastDue';
+import UserProfile from './pages/UserProfile';
 function App() {
   const { user } = useAuthContext();
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route exact path='/past-due' element={user ? <PastDue /> : <Navigate to='/login'/>} />
             <Route exact path='/login' element={!user ? <Login /> : <Navigate to='/'/>} />
             <Route exact path='/signup' element={!user ? <Signup /> : <Navigate to='/'/>} />
+            <Route exact path='/user-profile' element={user ? <UserProfile /> : <Navigate to='/login'/>} />
           </Routes>
         </div>
       </BrowserRouter>
