@@ -3,6 +3,7 @@ require('dotenv').config()
 const { format } = require('date-fns');
 const { Telegraf } = require('telegraf');
 const { message } = require('telegraf/filters');
+const { _ } = require('underscore');
 
 const fetchUser = async (username) => {
     const response = await fetch('http://localhost:4000/api/user/find/' + username, {
@@ -57,20 +58,6 @@ bot.help((ctx) => {
 bot.on(message('sticker'),
     (ctx) => ctx.reply("That's a cool sticker!"));
 
-
-// Task commands
-
-// bot.command('priority', async (ctx) => {
-//     ctx.reply('These are your current tasks by priority:');
-//     const tasks = await fetchTasks(ctx.state.user.token);
-//     tasks.forEach(task => {
-//         ctx.reply(`${task.title} from *${format(new Date(task.startTime), "hh:mm a")}* on *${format(new Date(task.startTime), "do MMM Y")}* to *${format(new Date(task.endTime), "hh:mm a")}* on *${format(new Date(task.endTime), "do MMM Y")}*, with tags:${task.tags.map(tag => ` *${tag}* `)}`,
-//         {
-//             parse_mode: 'Markdown'
-//         });
-//     });
-// });
-
 bot.command('tasks', async (ctx) => {
     bot.telegram.sendMessage(ctx.chat.id, 'Would you like to view your tasks by priority or date?',
        { reply_markup: {
@@ -88,6 +75,9 @@ bot.action('prio', async (ctx) => {
     ctx.answerCbQuery();
     ctx.reply('These are your current tasks by priority:');
     const tasks = await fetchTasks(ctx.state.user.token);
+    // console.log('first', tasks);
+    // const sortedTasks = _.sortBy(tasks, 'priority');
+    // console.log('then', sortedTasks);
     tasks.forEach(task => {
         ctx.reply(`${task.title} from *${format(new Date(task.startTime), "hh:mm a")}* on *${format(new Date(task.startTime), "do MMM Y")}* to *${format(new Date(task.endTime), "hh:mm a")}* on *${format(new Date(task.endTime), "do MMM Y")}*, with tags:${task.tags.map(tag => ` *${tag}* `)}`,
         {
