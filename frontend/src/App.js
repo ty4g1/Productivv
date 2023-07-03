@@ -21,8 +21,8 @@ function App() {
       {user && user.verified && <MenuBar />}
         <div className='pages'>
           <Routes>
-            <Route exxact path='/verify' element={user && !user.verified ? <Verify /> : <Navigate to='/'/>} />
             <Route exact path='/' element={user && user.verified ? <Home /> : <Navigate to='/login'/>} />
+            <Route exxact path='/verify' element={user && !user.verified ? <Verify /> : <Navigate to='/'/>} />
             <Route exact path='/calendar' element={user && user.verified ? <MyCalendar /> : <Navigate to='/login'/>} />
             <Route exact path='/form-recurring' element={user && user.verified ? <RecurringForm /> : <Navigate to='/login'/>} />
             <Route exact path='/completed' element={user && user.verified ? <Completed /> : <Navigate to='/login'/>} />

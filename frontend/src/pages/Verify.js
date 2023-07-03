@@ -19,16 +19,20 @@ const Verify = () => {
     }
 
     return ( 
-        <div className="verification-form">
-            <h2>Verify email</h2>
-            <button onClick={handleResend} disabled={isLoading_resend}>Resend code</button>
-            {message && <div className="message">{message}</div>}
-            <form onSubmit={handleSubmit}>
-                <label>Verification Code:</label>
-                <input type="text" required onChange={(e) => setCode(e.target.value)} value={code}/>
-                <button disabled={isLoading}>Verify</button>
-                {error && <div className="error">{error}</div>}
-            </form>
+        <div>
+            <p className="note"><b>Note:</b> Do not move away from the verification window, kindly click cancel if you wish to go back</p><br/>
+            <div className="verification-form">
+                <h2>Verify email</h2>
+                <p style={{color: 'white'}}>Verification code sent to {user.email}</p>
+                <button onClick={handleResend} disabled={isLoading_resend}>Resend code</button>
+                {message && <div className="message">{message}</div>}
+                <form onSubmit={handleSubmit}>
+                    <label>Verification Code:</label>
+                    <input type="text" required onChange={(e) => setCode(e.target.value)} value={code}/>
+                    <button disabled={isLoading}>Verify</button>
+                    {error && <div className="error">{error}</div>}
+                </form>
+            </div>
         </div>
      );
 }
