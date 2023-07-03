@@ -113,5 +113,16 @@ userSchema.statics.updateProfile = async function(body) {
     return user;
 }
 
+userSchema.statics.deleteProfile = async function(id) {
+    if (!id) {
+        throw Error(`All fields must be filled`);
+    }
+    const delRecords = await this.deleteMany({_id: id});
+    if (!delRecords) {
+        throw Error('Incorrect user id');
+    }
+    return delRecords;
+}
+
 
 module.exports = mongoose.model('User', userSchema);

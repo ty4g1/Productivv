@@ -32,6 +32,8 @@ const signupUser = async (req, res) => {
     }
 };
 
+
+
 //find user (for bot)
 const findUser = async (req, res) => {
     const username = req.params.username;
@@ -62,6 +64,17 @@ const updateUserProfile = async (req, res) => {
     const body = req.body;
     try {
         const user = await User.updateProfile(body);
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(400).json({error: error.message});
+    }
+}
+
+//delete user profile
+const deleteUserProfile = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const user = await User.deleteProfile(id);
         res.status(200).json(user);
     } catch (error) {
         res.status(400).json({error: error.message});
@@ -122,6 +135,7 @@ module.exports = {
     findUser,
     getUserProfile,
     updateUserProfile,
+    deleteUserProfile,
     verifyUser,
     resendVerification
 };

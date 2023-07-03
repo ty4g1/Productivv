@@ -14,11 +14,16 @@ const Navbar = () => {
                     <h1>Productivv</h1>
                 </Link>
                 <div className='auth-links'>
-                    {user && (
+                    {user && user.verified && (
                     <div>
                         <span><Link to='/user-profile' style={{color: 'white'}}>User Profile</Link></span>
                         <button onClick={handleClick}>Log out</button>
                     </div>)}
+                    {user && !user.verified && (
+                        <div>
+                            <button onClick={handleClick}>Cancel</button>
+                        </div>
+                    )}
                     {!user && (
                     <div>
                         <Link to='/login'>

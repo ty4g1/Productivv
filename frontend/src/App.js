@@ -18,18 +18,18 @@ function App() {
     <div className="App">
       <BrowserRouter>
       <Navbar />
-      {user && <MenuBar />}
+      {user && user.verified && <MenuBar />}
         <div className='pages'>
           <Routes>
-            <Route exxact path='/verify' element={<Verify />} />
-            <Route exact path='/' element={user ? <Home /> : <Navigate to='/login'/>} />
-            <Route exact path='/calendar' element={user ? <MyCalendar /> : <Navigate to='/login'/>} />
-            <Route exact path='/form-recurring' element={user ? <RecurringForm /> : <Navigate to='/login'/>} />
-            <Route exact path='/completed' element={user ? <Completed /> : <Navigate to='/login'/>} />
-            <Route exact path='/past-due' element={user ? <PastDue /> : <Navigate to='/login'/>} />
-            <Route exact path='/login' element={!user ? <Login /> : <Navigate to='/'/>} />
-            <Route exact path='/signup' element={!user ? <Signup /> : <Navigate to='/'/>} />
-            <Route exact path='/user-profile' element={user ? <UserProfile /> : <Navigate to='/login'/>} />
+            <Route exxact path='/verify' element={user && !user.verified ? <Verify /> : <Navigate to='/'/>} />
+            <Route exact path='/' element={user && user.verified ? <Home /> : <Navigate to='/login'/>} />
+            <Route exact path='/calendar' element={user && user.verified ? <MyCalendar /> : <Navigate to='/login'/>} />
+            <Route exact path='/form-recurring' element={user && user.verified ? <RecurringForm /> : <Navigate to='/login'/>} />
+            <Route exact path='/completed' element={user && user.verified ? <Completed /> : <Navigate to='/login'/>} />
+            <Route exact path='/past-due' element={user && user.verified ? <PastDue /> : <Navigate to='/login'/>} />
+            <Route exact path='/login' element={!user ? <Login /> : !user.verified ? <Navigate to='/verify'/> : <Navigate to='/'/>} />
+            <Route exact path='/signup' element={!user ? <Signup /> : !user.verified ? <Navigate to='/verify'/> : <Navigate to='/'/>} />
+            <Route exact path='/user-profile' element={user && user.verified ? <UserProfile /> : <Navigate to='/login'/>} />
           </Routes>
         </div>
       </BrowserRouter>
