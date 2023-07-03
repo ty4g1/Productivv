@@ -3,12 +3,11 @@ const jwt = require('jsonwebtoken');
 const createToken = (_id) => {
     return jwt.sign({_id}, process.env.SECRET, {expiresIn: '3d'});
 };
-
-//import verification model
-const Verification = require('../models/verificationModel');
-
-//login user
 const User = require('../models/userModel');
+const Verification = require('../models/verificationModel');
+const bcrypt = require('bcrypt');
+//login user
+
 const loginUser = async (req, res) => {
     //res.json({message: "Login user"});
     const {email, password} = req.body;
@@ -69,10 +68,43 @@ const updateUserProfile = async (req, res) => {
     }
 }
  
+//verify user
+const verifyUser = async (req, res) => {
+    const {email, code} = req.body;
+    try {
+        if (!email || !code) {
+            throw Error("All fields must be filled");
+        } else {
+            const verification = await Verification.findOne({email: email});
+            if (!verification) {
+                throw Error("Incorrect email");
+            } else {
+                const { expiresAt, code: hashedCode} = verification;
+                if (Date.now() > expiresAt) {
+                    await Verification.deleteMany({email: email});
+                    throw Error("Code expired");
+                } else {
+                    const validCode = await bcrypt.compare(code, hashedCode);
+                    if (!validCode) {
+                        throw Error("Incorrect code");
+                    } else {
+                        const user = await User.findOneAndUpdate({email: email}, {verified: true});
+                        await Verification.deleteMany({email: email});
+                        res.status(200).json({message: "User verified"});
+                    }
+                }
+            }
+        }
+    } catch (error) {
+        res.status(400).json({error: error.message});
+    }
+}
+
 module.exports = {
     signupUser,
     loginUser,
     findUser,
     getUserProfile,
-    updateUserProfile
+    updateUserProfile,
+    verifyUser
 };

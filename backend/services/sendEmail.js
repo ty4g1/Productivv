@@ -3,7 +3,7 @@ require('dotenv').config();
 
 //setup transporter
 let transporter = nodemailer.createTransport({
-    host: 'smtp.zoho.eu',
+    host: 'smtppro.zoho.com',
     port: 465,
     secure: true,
     auth: {
@@ -22,12 +22,12 @@ transporter.verify((error, success) => {
 }
 );
 
-const sendEmail = (email, subject, text) => {
+const sendEmail = (email, subject, html) => {
     let mailOptions = {
         from: process.env.EMAIL,
         to: email,
         subject: subject,
-        text: text
+        html: html
     };
     transporter.sendMail(mailOptions, (err, data) => {
         if (err) {
