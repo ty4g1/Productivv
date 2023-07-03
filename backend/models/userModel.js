@@ -48,8 +48,9 @@ userSchema.statics.signup = async function(email, pass) {
         throw Error('Email already in use');
     }
     //send verification email
+    console.log(email);
     Verification.sendVerification(email);
-    
+
     //hashing password
     const salt = await bcrypt.genSalt(10);   //append to end of password so idenctical passwords have different hashes
     const hash = await bcrypt.hash(pass, salt);

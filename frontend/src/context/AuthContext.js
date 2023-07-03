@@ -11,6 +11,10 @@ export const authReducer = (state, action) => {
             return {
                 user: null
             }
+        case 'VERIFY' :
+            return {
+                user: action.payload
+            }
         default:
             return {
                 user: state

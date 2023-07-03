@@ -11,6 +11,7 @@ import RecurringForm from './pages/RecurringForm';
 import Completed from './pages/Completed';
 import PastDue from './pages/PastDue';
 import UserProfile from './pages/UserProfile';
+import Verify from './pages/Verify';
 function App() {
   const { user } = useAuthContext();
   return (
@@ -20,6 +21,7 @@ function App() {
       {user && <MenuBar />}
         <div className='pages'>
           <Routes>
+            <Route exxact path='/verify' element={<Verify />} />
             <Route exact path='/' element={user ? <Home /> : <Navigate to='/login'/>} />
             <Route exact path='/calendar' element={user ? <MyCalendar /> : <Navigate to='/login'/>} />
             <Route exact path='/form-recurring' element={user ? <RecurringForm /> : <Navigate to='/login'/>} />

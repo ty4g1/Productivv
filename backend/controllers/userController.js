@@ -90,7 +90,7 @@ const verifyUser = async (req, res) => {
                     } else {
                         const user = await User.findOneAndUpdate({email: email}, {verified: true});
                         await Verification.deleteMany({email: email});
-                        res.status(200).json({message: "User verified"});
+                        res.status(200).json({username: user.username, email: user.email, verified: user.verified, token: createToken(user._id)});
                     }
                 }
             }
