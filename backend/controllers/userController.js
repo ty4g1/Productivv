@@ -4,6 +4,9 @@ const createToken = (_id) => {
     return jwt.sign({_id}, process.env.SECRET, {expiresIn: '3d'});
 };
 
+//import verification model
+const Verification = require('../models/verificationModel');
+
 //login user
 const User = require('../models/userModel');
 const loginUser = async (req, res) => {
