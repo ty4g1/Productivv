@@ -17,6 +17,7 @@ export const useVerify = () => {
         const json = await response.json();
         if (!response.ok) {
             setisLoading(false);
+            console.log(json.error);
             setError(json.error);
         }
         if (response.ok) {
