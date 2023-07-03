@@ -3,10 +3,22 @@ import { useLogout } from '../hooks/useLogout';
 import { useAuthContext } from '../hooks/useAuthContext';
 const Navbar = () => {
     const { logout } = useLogout();
-    const { user } = useAuthContext();
+    const { user, dispatch } = useAuthContext();
     const handleClick = () => {
         logout();
     }
+    const handleClickDel = async () => {
+        const response = await fetch(`/api/users/delete/${user.id}`, {
+            method: 'DELETE',
+            headers: {'Content-Type': 'application/json'},
+        });
+        const json = await response.json();
+        if (response.ok) {
+            localStorage.removeItem('user');
+            dispatch({type: 'LOGOUT'});
+        }
+    }
+
     return ( 
         <nav className='navbar'>
             <div className="container">
@@ -21,7 +33,7 @@ const Navbar = () => {
                     </div>)}
                     {user && !user.verified && (
                         <div>
-                            <button onClick={handleClick}>Cancel</button>
+                            <button onClick={handleClickDel}>Cancel</button>
                         </div>
                     )}
                     {!user && (

@@ -117,7 +117,7 @@ userSchema.statics.deleteProfile = async function(id) {
     if (!id) {
         throw Error(`All fields must be filled`);
     }
-    const delRecords = await this.deleteMany({_id: id});
+    const delRecords = await this.deleteMany({_id: new mongoose.Types.ObjectId(id)});
     if (!delRecords) {
         throw Error('Incorrect user id');
     }
