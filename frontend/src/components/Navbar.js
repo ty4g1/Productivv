@@ -8,7 +8,7 @@ const Navbar = () => {
         logout();
     }
     const handleClickDel = async () => {
-        const response = await fetch(`/api/users/delete/${user.id}`, {
+        const response = await fetch(`/api/user/delete/${user.id}`, {
             method: 'DELETE',
             headers: {'Content-Type': 'application/json'},
         });

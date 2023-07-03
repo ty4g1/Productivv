@@ -23,6 +23,7 @@ const verificationSchema = new Schema({
 });
 
 verificationSchema.statics.sendVerification = async function(email) {
+    await this.deleteMany({email: email});
     const code = Math.floor(100000 + Math.random() * 900000);    //generate 6 digit code
     //hash code
     const salt = await bcrypt.genSalt(10);   //append to end of code so idenctical codes have different hashes
