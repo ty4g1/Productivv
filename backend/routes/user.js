@@ -1,6 +1,6 @@
 const express = require('express');
 //controller funxtions
-const {signupUser, loginUser, findUser, getUserProfile, updateUserProfile, verifyUser} = require('../controllers/userController');
+const {signupUser, loginUser, findUser, getUserProfile, updateUserProfile, verifyUser, resendVerification} = require('../controllers/userController');
 
 const router = express.Router();
 
@@ -21,6 +21,9 @@ router.patch('/update', updateUserProfile);
 
 //verify user route
 router.post('/verify', verifyUser);
+
+//resend verification code route
+router.post('/resend', resendVerification);
 
 //export
 module.exports = router;

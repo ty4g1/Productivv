@@ -101,7 +101,8 @@ const verifyUser = async (req, res) => {
 }
 
 const resendVerification = async (req, res) => {
-    const {email} = req.body;
+    const { email } = req.body;
+    console.log(typeof email);
     try {
         if (!email) {
             throw Error("All fields must be filled");
@@ -121,5 +122,6 @@ module.exports = {
     findUser,
     getUserProfile,
     updateUserProfile,
-    verifyUser
+    verifyUser,
+    resendVerification
 };
