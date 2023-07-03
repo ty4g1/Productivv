@@ -100,6 +100,21 @@ const verifyUser = async (req, res) => {
     }
 }
 
+const resendVerification = async (req, res) => {
+    const {email} = req.body;
+    try {
+        if (!email) {
+            throw Error("All fields must be filled");
+        } else {
+            Verification.resendVerification(email);
+            res.status(200).json({message: "Verification code sent"});
+        }
+    } catch (error) {
+        res.status(400).json({error: error.message});
+    }
+}
+
+
 module.exports = {
     signupUser,
     loginUser,

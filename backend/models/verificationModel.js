@@ -33,5 +33,12 @@ verificationSchema.statics.sendVerification = async function(email) {
     sendEmail(email, "Verify your email", `<p>Enter this code to verify your email: <b>${code}</b></p><br><p>Code expires in 1 hour</p>`);
 }
 
+verificationSchema.statics.resendVerification = async function(email) {
+    await this.deleteMany({email: email});
+    this.sendVerification(email);
+}
+
+
+
 
 module.exports = mongoose.model('Verification', verificationSchema);
