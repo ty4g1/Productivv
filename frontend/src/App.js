@@ -12,6 +12,7 @@ import Completed from './pages/Completed';
 import PastDue from './pages/PastDue';
 import UserProfile from './pages/UserProfile';
 import Verify from './pages/Verify';
+import PageNotFound from './pages/PageNotFound';
 function App() {
   const { user } = useAuthContext();
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route exact path='/login' element={!user ? <Login /> : !user.verified ? <Navigate to='/verify'/> : <Navigate to='/'/>} />
             <Route exact path='/signup' element={!user ? <Signup /> : !user.verified ? <Navigate to='/verify'/> : <Navigate to='/'/>} />
             <Route exact path='/user-profile' element={user && user.verified ? <UserProfile /> : <Navigate to='/login'/>} />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </div>
       </BrowserRouter>
