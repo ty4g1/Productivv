@@ -28,16 +28,6 @@ const resetPassword = async (req, res) => {
     }
 }
 
-//send password reset email
-const sendResetEmail = async (req, res) => {
-    const {email} = req.body;
-    try {
-        const user = User.sendResetMail(email);
-        res.status(200).json(user);
-    } catch (error) {
-        res.status(400).json({error: error.message});
-    }
-}
 
 
-module.exports = {verifyResetToken, resetPassword, sendResetEmail};
+module.exports = {verifyResetToken, resetPassword};
