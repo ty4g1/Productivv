@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
+const validator = require('validator');
 //verify password reset token
 const verifyResetToken = async (req, res) => {
     const token = req.params.token;
@@ -17,6 +18,9 @@ const verifyResetToken = async (req, res) => {
 const resetPassword = async (req, res) => {
     const {password, _id} = req.body;
     try {
+        if (!validator.isStrongPassword(password)) {
+            throw new Error('Password must be at least 8 characters long and contain at least 1 lowercase, 1 uppercase, 1 number, and 1 symbol');
+        }
         //hashing password
         const salt = await bcrypt.genSalt(10);   //append to end of password so idenctical passwords have different hashes
         const hash = await bcrypt.hash(password, salt);
