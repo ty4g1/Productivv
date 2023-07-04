@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const taskRoutes = require('./routes/tasks');
 const userRoutes = require('./routes/user');
-
+const resetRoutes = require('./routes/resetPassword');
 //express app
 const app = express();
 
@@ -17,6 +17,7 @@ app.use((req, res, next) => {
 //routes
 app.use('/api/tasks',taskRoutes);
 app.use('/api/user',userRoutes);
+app.use('/api/reset', resetRoutes);
 
 
 //connect to db

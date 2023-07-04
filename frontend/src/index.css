@@ -81,7 +81,7 @@
   cursor: pointer;
 }
 
-.task-form-recurring, .task-form, .login-form, .signup-form, .verification-form, .forgot-password {
+.task-form-recurring, .task-form, .login-form, .signup-form, .verification-form, .forgot-password, .reset {
   margin: 10px auto;
   padding: 30px;
   border-radius: 30px;
@@ -91,7 +91,8 @@
   width: fit-content;
 }
 
-.task-form-recurring h2, .task-form h2, .login-form h2, .signup-form h2, .verification-form h2, .forgot-password h2 {
+.task-form-recurring h2, .task-form h2, .login-form h2, .signup-form h2, 
+.verification-form h2, .forgot-password h2, .reset h2 {
   position: relative;
   color: white;
   font-size: 1.5em;
@@ -102,24 +103,25 @@
 .task-form-recurring-p1 input, .task-form label, .task-form input, .login-form label, 
 .login-form input, .signup-form input, .signup-form label, 
 .verification-form input, .verification-form label,
-.forgot-password input, .forgot-password label {
+.forgot-password input, .forgot-password label,
+.reset input, .reset label {
   display: block;
 }
 
-.task-form-recurring label, .task-form label, .login-form label, .signup-form label, .verification-form label, .forgot-password label {
+.task-form-recurring label, .task-form label, .login-form label, .signup-form label, .verification-form label, .forgot-password label, .reset label {
   font-size: 1.2em;
   color: white;
   font-weight: bold;
 }
 
-.task-form-recurring input, .task-form input, .login-form input, .signup-form input, .verification-form input, .forgot-password input {
+.task-form-recurring input, .task-form input, .login-form input, .signup-form input, .verification-form input, .forgot-password input, .reset input {
   margin: 10px auto;
   padding: 5px;
   border: rgb(227, 227, 227) solid 5px;
   border-radius: 10px;
 }
 
-.task-form-recurring button, .task-form button, .login-form button, .signup-form button, .verification-form button, .forgot-password button{
+.task-form-recurring button, .task-form button, .login-form button, .signup-form button, .verification-form button, .forgot-password button, .reset button{
   display: block;
   margin-top: 30px;
   font-size: 1.2em;
@@ -134,7 +136,7 @@
   margin: 0px auto;
   margin-top: 20px;
 }
-.task-form button:hover, .login-form button:hover, .signup-form button:hover, .verification-form button:hover, .forgot-password button:hover {
+.task-form button:hover, .login-form button:hover, .signup-form button:hover, .verification-form button:hover, .forgot-password button:hover, .reset button:hover {
   background-color: #3f0065;
 }
 
@@ -516,5 +518,16 @@
 
 .verification-form button {
   font-size: smaller;
+  margin: 10px auto;
+}
+
+.reset {
+  width: fit-content;
+  max-width: 500px;
+}
+
+.reset p {
+  color: white;
+  width: 50%;
   margin: 10px auto;
 }
