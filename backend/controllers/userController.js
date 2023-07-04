@@ -128,6 +128,23 @@ const resendVerification = async (req, res) => {
     }
 }
 
+//send reset password email
+const sendResetPasswordEmail = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({email: email});
+        if (!user) {
+            throw Error("Incorrect email");
+        } else {
+            const token = createToken(user._id);
+            User.sendResetMail(email, token);
+            res.status(200).json({message: "Reset password email sent"});
+        }
+    } catch (error) {
+        res.status(400).json({error: error.message});
+    }
+}
+
 
 module.exports = {
     signupUser,
@@ -137,5 +154,6 @@ module.exports = {
     updateUserProfile,
     deleteUserProfile,
     verifyUser,
-    resendVerification
+    resendVerification,
+    sendResetPasswordEmail
 };

@@ -39,21 +39,6 @@ verificationSchema.statics.resendVerification = async function(email) {
     this.sendVerification(email);
 }
 
-verificationSchema.statics.verifyLogin = async function(email) {
-    await this.deleteMany({email: email});
-    const code = Math.floor(100000 + Math.random() * 900000);    //generate 6 digit code
-    //hash code
-    const salt = await bcrypt.genSalt(10);   //append to end of code so idenctical codes have different hashes
-    const hash = await bcrypt.hash(String(code), salt);
-    //create verification
-    const verification = await this.create({email, code: hash});
-    //send email
-    sendEmail(email, "Reset Password", `<p>Enter this code to login: <b>${code}</b></p><br>
-                                        <p>Code expires in <b>1 hour</b></p><br>
-                                        <p>Kindly reset your password in the <b>User Profile<b> page after you login</p><br>
-                                        <p>If you did not request a password reset, please ignore this email</p>`);
-}
-
 
 
 module.exports = mongoose.model('Verification', verificationSchema);

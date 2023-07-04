@@ -6,7 +6,7 @@ const verifyResetToken = async (req, res) => {
     const token = req.params.token;
     try {
         const {_id} = jwt.verify(token, process.env.SECRET);
-        user = await User.findOne({_id});
+        const user = await User.findOne({_id});
         res.status(200).json(user);
     } catch (error) {
         res.status(400).json({error: error.message});
@@ -28,4 +28,16 @@ const resetPassword = async (req, res) => {
     }
 }
 
-module.exports = {verifyResetToken, resetPassword};
+//send password reset email
+const sendResetEmail = async (req, res) => {
+    const {email} = req.body;
+    try {
+        const user = User.sendResetMail(email);
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(400).json({error: error.message});
+    }
+}
+
+
+module.exports = {verifyResetToken, resetPassword, sendResetEmail};

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 const validator = require('validator');
+const sendEmail = require('../services/sendEmail');
 
 //import verification model
 const Verification = require('./verificationModel');
@@ -127,6 +128,21 @@ userSchema.statics.deleteProfile = async function(id) {
     }
     return delRecords;
 }
+
+userSchema.statics.sendResetMail = async function(email, token) {
+    if (!email) {
+        throw Error(`All fields must be filled`);
+    }
+    const user = this.findOne({email: email});
+    if (!user) {
+        throw Error('Incorrect email');
+    }
+    const link = `http://localhost:3000/reset/${token}`;
+    sendEmail(email, "Reset password link" ,`<p> Click the link below to rest your password </p><br><p>${link}</p>`);
+    return user;
+}
+
+
 
 
 module.exports = mongoose.model('User', userSchema);

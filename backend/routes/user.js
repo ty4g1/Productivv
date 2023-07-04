@@ -1,7 +1,15 @@
 const express = require('express');
 
 //controller funxtions
-const {signupUser, loginUser, findUser, getUserProfile, updateUserProfile, deleteUserProfile, verifyUser, resendVerification} = require('../controllers/userController');
+const {signupUser, 
+    loginUser, 
+    findUser, 
+    getUserProfile, 
+    updateUserProfile, 
+    deleteUserProfile, 
+    verifyUser, 
+    resendVerification,
+    sendResetPasswordEmail} = require('../controllers/userController');
 
 const router = express.Router();
 
@@ -30,7 +38,8 @@ router.patch('/update', updateUserProfile);
 //delete profile route
 router.delete('/delete/:id', deleteUserProfile);
 
-
+//send reset password email route
+router.post('/reset', sendResetPasswordEmail);
 
 //export
 module.exports = router;
