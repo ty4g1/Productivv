@@ -34,7 +34,7 @@ function App() {
             <Route exact path='/signup' element={!user ? <Signup /> : !user.verified ? <Navigate to='/verify'/> : <Navigate to='/'/>} />
             <Route exact path='/user-profile' element={user && user.verified ? <UserProfile /> : <Navigate to='/login'/>} />
             <Route exact path='/forgot-password' element={!user ? <ForgotPassword /> : !user.verified ? <Navigate to='/verify'/> : <Navigate to='/'/>} />
-            <Route exact path='/reset' element={user && user.verified ? <ResetPassword/> : <Navigate to='/login'/>}></Route>
+            <Route exact path='/reset/:token' element={<ResetPassword/>}></Route>
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </div>
