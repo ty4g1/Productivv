@@ -138,7 +138,7 @@ userSchema.statics.sendResetMail = async function(email, token) {
         throw Error('Incorrect email');
     }
     const link = `http://localhost:3000/reset/${token}`;
-    sendEmail(email, "Reset password link" ,`<p> Click the link below to rest your password </p><br><p>${link}</p>`);
+    sendEmail(email, "Reset password link" ,`<p> Click the link below to reset your password </p><br><p>${link}</p>`);
     return user;
 }
 
