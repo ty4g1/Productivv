@@ -26,7 +26,7 @@ const Navbar = () => {
                     <h1>Productivv</h1>
                 </Link>
                 <div className='auth-links'>
-                    {user && user.verified && (
+                    {user && user.verified && !user.google && (
                     <div>
                         <span><Link to='/user-profile' style={{color: 'white'}}>User Profile</Link></span>
                         <button onClick={handleClick}>Log out</button>

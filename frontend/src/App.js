@@ -15,6 +15,7 @@ import Verify from './pages/Verify';
 import PageNotFound from './pages/PageNotFound';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+
 function App() {
   const { user } = useAuthContext();
   return (
