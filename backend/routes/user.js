@@ -9,7 +9,9 @@ const {signupUser,
     deleteUserProfile, 
     verifyUser, 
     resendVerification,
-    sendResetPasswordEmail} = require('../controllers/userController');
+    sendResetPasswordEmail,
+    googleLoginUser,
+    googleSignupUser} = require('../controllers/userController');
 
 const router = express.Router();
 
@@ -40,6 +42,12 @@ router.delete('/delete/:id', deleteUserProfile);
 
 //send reset password email route
 router.post('/reset', sendResetPasswordEmail);
+
+//google login route
+router.post('/googlelogin', googleLoginUser);
+
+//google signup route
+router.post('/googlesignup', googleSignupUser);
 
 //export
 module.exports = router;

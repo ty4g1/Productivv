@@ -145,6 +145,32 @@ const sendResetPasswordEmail = async (req, res) => {
     }
 }
 
+//google login
+const googleLoginUser = async (req, res) => {
+    const {email} = req.body;
+    try {
+        const user = await User.googleLogin(email);
+        const token = createToken(user._id);
+        res.status(200).json({username: user.username, email, token, id: user._id});
+    } catch (error) {
+        res.status(400).json({error: error.message});
+    }
+};
+
+//google signup
+const googleSignupUser = async (req, res) => {
+    const {email, password} = req.body;
+    try {
+        const user = await User.googleSignup(email, password);
+        const token = createToken(user._id);
+        res.status(200).json({username: user.username, email, token, id: user._id});
+    } catch (error) {
+        res.status(400).json({error: error.message});
+    }
+};
+
+
+
 
 module.exports = {
     signupUser,
@@ -155,5 +181,7 @@ module.exports = {
     deleteUserProfile,
     verifyUser,
     resendVerification,
-    sendResetPasswordEmail
+    sendResetPasswordEmail,
+    googleLoginUser,
+    googleSignupUser
 };

@@ -13,7 +13,7 @@ const Signup = () => {
     }
 
     const handleCredentialResponse = async (response) => {
-        console.log(response);
+        console.log(response.credential);
         var userObject = jwt_decode(response.credential);
         console.log(userObject);
         var password = generator.generate({
@@ -23,8 +23,7 @@ const Signup = () => {
             uppercase: true,
             lowercase: true
         });
-        console.log(password);
-        await signup(userObject.email, password, true);
+        console.log(userObject.email, password, true);
     }
 
     useEffect(() => {
