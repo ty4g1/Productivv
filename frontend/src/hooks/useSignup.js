@@ -5,7 +5,7 @@ export const useSignup = () => {
     const [error, setError] = useState(null);
     const [isLoading, setisLoading] = useState(false);
     const {dispatch} = useAuthContext();
-    const signup = async (email, password) => {
+    const signup = async (email, password, verified) => {
         setisLoading(true);
         setError(null);
 
@@ -22,8 +22,8 @@ export const useSignup = () => {
         }
         if (response.ok) {
             setisLoading(false);
-            localStorage.setItem('user', JSON.stringify({...json, verified: false}));
-            dispatch({type: 'LOGIN', payload: {...json, verified: false}});
+            localStorage.setItem('user', JSON.stringify({...json, verified}));
+            dispatch({type: 'LOGIN', payload: {...json, verified}});
         }
         
 

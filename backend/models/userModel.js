@@ -142,6 +142,43 @@ userSchema.statics.sendResetMail = async function(email, token) {
     return user;
 }
 
+//authenticate google login
+userSchema.statics.googleLogin = async function(email) {
+    if (!email) {
+        throw Error(`All fields must be filled`);
+    }
+    const user = await this.findOne({email: email});
+    if (!user) {
+        throw Error('Incorrect email');
+    }
+    return user;
+}
+
+//google signup
+userSchema.statics.googleSignup = async function(email, pass) {
+    //validation
+    if (!(email && pass)) {
+        throw Error("All fields mus be filled");
+    }
+    if (!validator.isEmail(email)) {
+        throw Error("Please enter a valid e-mail");
+    }
+    //must include special char,alpha-num, uppercase, lowercase, min 8 characters
+    if (!validator.isStrongPassword(pass)) {    
+        throw Error('Please enter a stronger password');
+    }             
+    const exists = await this.findOne({email: email});
+    if (exists) {
+        throw Error('Email already in use');
+    }
+
+    //hashing password
+    const salt = await bcrypt.genSalt(10);   //append to end of password so idenctical passwords have different hashes
+    const hash = await bcrypt.hash(pass, salt);
+
+    const user = await this.create({email, password: hash, username: email.split('@')[0]});
+    return user;
+}
 
 
 
