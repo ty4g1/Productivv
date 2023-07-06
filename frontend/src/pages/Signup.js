@@ -40,7 +40,9 @@ const Signup = () => {
             document.getElementById("signInDiv"),
             {
                 theme: "outline",
-                size: "large"
+                size: "large",
+                locale: "en",
+                width: "300px"
             }
         );
         google.accounts.id.prompt();
@@ -60,7 +62,7 @@ const Signup = () => {
                 {google_error && <div className="error">{google_error}</div>}
                 {message && <div className="message">{message}</div>}
             </form>
-            <div id="signInDiv" style={{marginLeft: '20%', marginTop: '20px'}}></div>
+            <div id="signInDiv" style={{margin: '10px auto'}}>button</div>
         </div>
      );
 }

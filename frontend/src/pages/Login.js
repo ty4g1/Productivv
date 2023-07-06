@@ -30,7 +30,8 @@ const Login = () => {
             document.getElementById("signInDiv"),
             {
                 theme: "outline",
-                size: "large"
+                size: "large",
+                locale: "en"
             }
         );
         
@@ -50,7 +51,7 @@ const Login = () => {
                 {google_error && <div className="error">{google_error}</div>}
                 {error && <div className="error">{error}</div>}
             </form>
-            <div id="signInDiv" style={{margin: '10px auto'}}></div>
+            <div id="signInDiv" style={{margin: '10px auto'}}>button</div>
         </div>
      );
 }

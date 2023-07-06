@@ -276,8 +276,7 @@
 }
 
 .signup-form {
-  min-width: 25%;
-  max-width: 300px;
+  width: 300px;
 }
 
 .menu-container {
