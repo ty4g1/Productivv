@@ -51,6 +51,9 @@ const TaskDesc = ({task}) => {
         if (!user) {
             return
         }
+        if (!window.confirm('Are you sure you want to mark this task as complete?')) {
+            return
+        }
         const response = await fetch('/api/tasks/' + task._id, {
             method: 'PATCH',
             headers: {

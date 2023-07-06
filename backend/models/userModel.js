@@ -137,7 +137,7 @@ userSchema.statics.sendResetMail = async function(email, token) {
     if (!user) {
         throw Error('Incorrect email');
     }
-    const link = `http://localhost:3000/reset/${token}`;
+    const link = `http://productivv.netlify.app/reset/${token}`;
     sendEmail(email, "Reset password link" ,`<p> Click the link below to reset your password </p><br><p>${link}</p>`);
     return user;
 }
