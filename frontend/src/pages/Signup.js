@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSignup } from "../hooks/useSignup";
 const Signup = () => {
     const [email, setEmail] = useState('');
@@ -8,6 +8,26 @@ const Signup = () => {
         e.preventDefault();
         await signup(email, password);
     }
+
+    const handleCredentialResponse = (response) => {
+        console.log(response);
+    }
+
+    useEffect(() => {
+        /*global google*/
+        google.accounts.id.initialize({
+            client_id: "1000000000000-abc123def456.apps.googleusercontent.com",
+            callback: handleCredentialResponse
+        });
+
+        google.accounts.id.renderButton(
+            document.getElementById("signInDiv"),
+            {
+                theme: "outline",
+                size: "large"
+            }
+        );
+    }, []);
 
     return ( 
         <div className="signup-form">
@@ -20,7 +40,8 @@ const Signup = () => {
                 <input type="password" required onChange={(e) => setPassword(e.target.value)} value={password}/>
                 <button disabled={isLoading}>Sign Up</button>
                 {error && <div className="error">{error}</div>}
-            </form>
+            </form><br></br>
+            <div id="signInDiv"></div>
         </div>
      );
 }
