@@ -43,6 +43,7 @@ const Signup = () => {
                 size: "large"
             }
         );
+        google.accounts.id.prompt();
     }, []);
 
     return ( 
@@ -59,7 +60,7 @@ const Signup = () => {
                 {google_error && <div className="error">{google_error}</div>}
                 {message && <div className="message">{message}</div>}
             </form>
-            <div id="signInDiv" style={{margin: '10px 60px'}}></div>
+            <div id="signInDiv" style={{marginLeft: '20%', marginTop: '20px'}}></div>
         </div>
      );
 }

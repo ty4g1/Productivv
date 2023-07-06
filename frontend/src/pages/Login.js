@@ -7,7 +7,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { login, isLoading, error} = useLogin();
-    const { googleLogin } = useGoogleLogin();
+    const { googleLogin, isLoading: google_isLoading, error: google_error } = useGoogleLogin();
     const handleSubmit = async (e) => {
         e.preventDefault();
         await login(email, password);
@@ -33,7 +33,10 @@ const Login = () => {
                 size: "large"
             }
         );
+        
+        google.accounts.id.prompt();
     }, []);
+
     return ( 
         <div className="login-form">
             <h2>Login</h2>
@@ -42,11 +45,12 @@ const Login = () => {
                 <input type="email" required onChange={(e) => setEmail(e.target.value)} value={email}/>
                 <label>Password:</label>
                 <input type="password" required onChange={(e) => setPassword(e.target.value)} value={password}/>
-                <button disabled={isLoading}>Log in</button>
+                <button disabled={isLoading || google_isLoading}>Log in</button>
                 <Link to='/forgot-password' style={{color: 'white', textDecoration: 'none'}}>Forgot password?</Link>
-                <div id="signInDiv" style={{margin: '10px 60px'}}></div>
+                {google_error && <div className="error">{google_error}</div>}
                 {error && <div className="error">{error}</div>}
             </form>
+            <div id="signInDiv" style={{margin: '10px auto'}}></div>
         </div>
      );
 }
