@@ -84,7 +84,7 @@ const TaskDesc = ({task}) => {
 
         if (response.ok) {
             dispatch({type: 'PATCH_TASK', payload: json});
-            dispatch_user({type: 'LOGIN', payload: user_json});
+            dispatch_user({type: 'LOGIN', payload: {...user_json, token: user.token}});
             window.alert('Task marked as complete, you have earned ' + points + ' points!');
         }
     }
