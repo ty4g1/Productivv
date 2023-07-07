@@ -126,11 +126,13 @@ userSchema.statics.updatePoints = async function(body) {
     if (!body) {
         throw Error(`All fields must be filled`);
     }
-    const user = await this.findOneAndUpdate({email: body.email}, {points: body.points});
+    const user = await this.findOne({email: body.email});
     if (!user) {
         throw Error('Incorrect email');
     }
-    return user;
+    const points = user.points + body.points;
+    const upd_user = await this.findOneAndUpdate({email: body.email}, {points: points});
+    return upd_user;
 }
 
 userSchema.statics.deleteProfile = async function(id) {
