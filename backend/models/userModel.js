@@ -28,6 +28,10 @@ const userSchema = new Schema({
     verified: {
         type: Boolean,
         default: false
+    },
+    points: {
+        type: Number,
+        default: 0
     }
 });
 
@@ -112,6 +116,17 @@ userSchema.statics.updateProfile = async function(body) {
         throw Error(`All fields must be filled`);
     }
     const user = await this.findOneAndUpdate({email: body.email}, {username: body.username, tele_id: body.tele_id});
+    if (!user) {
+        throw Error('Incorrect email');
+    }
+    return user;
+}
+
+userSchema.statics.updatePoints = async function(body) {
+    if (!body) {
+        throw Error(`All fields must be filled`);
+    }
+    const user = await this.findOneAndUpdate({email: body.email}, {points: body.points});
     if (!user) {
         throw Error('Incorrect email');
     }

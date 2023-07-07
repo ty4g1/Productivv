@@ -7,7 +7,7 @@ import { useAuthContext } from '../hooks/useAuthContext';
 const TaskDesc = ({task}) => {
     const [edit, setEdit] = useState(false);
     const {dispatch} = useTasksContext();
-    const { user } = useAuthContext();
+    const { user, dispatch: dispatch_user } = useAuthContext();
     const deleteRecurring = async () => {
         if (!user) {
             return 
@@ -54,6 +54,13 @@ const TaskDesc = ({task}) => {
         if (!window.confirm('Are you sure you want to mark this task as complete?')) {
             return
         }
+        const calcPoints = (task) => {
+            const diff = new Date(task.endTime) - new Date(task.startTime);
+            const hours = diff / (1000 * 60 * 60);
+            const points = Math.round(hours * 10 + task.priority / 10);
+            return points;
+        }
+        const points = calcPoints(task);
         const response = await fetch('/api/tasks/' + task._id, {
             method: 'PATCH',
             headers: {
@@ -63,10 +70,21 @@ const TaskDesc = ({task}) => {
             body: JSON.stringify({completed: true})
         });
 
+        const user_response = await fetch('/api/user/updatepoints', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({email: user.email, points})
+        });
+
         const json = await response.json();
+        const user_json = await user_response.json();
+
 
         if (response.ok) {
             dispatch({type: 'PATCH_TASK', payload: json});
+            dispatch_user({type: 'LOGIN', payload: user_json});
         }
     }
 

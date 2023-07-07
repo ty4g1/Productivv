@@ -11,7 +11,8 @@ const {signupUser,
     resendVerification,
     sendResetPasswordEmail,
     googleLoginUser,
-    googleSignupUser} = require('../controllers/userController');
+    googleSignupUser,
+    updateUserPoints} = require('../controllers/userController');
 
 const router = express.Router();
 
@@ -36,6 +37,9 @@ router.post('/profile', getUserProfile);
 
 //update profile route
 router.patch('/update', updateUserProfile);
+
+//update points route
+router.patch('/updatepoints', updateUserPoints);
 
 //delete profile route
 router.delete('/delete/:id', deleteUserProfile);
