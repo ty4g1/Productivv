@@ -412,31 +412,31 @@
   border-radius: 20px;
 }
 
-.userprofile {
+.userInfo {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
 }
 
-.userprofile h1 {
+.userInfo h1 {
   font-size: 3em;
   font-weight: bolder;
   margin-bottom: 30px;
   color: #9d00ff;
 }
 
-.userprofile h2 {
+.userInfo h2 {
   align-items: center;
   margin-bottom: 20px;
 }
 
-.userprofile h2 b {
+.userInfo h2 b {
   color: #9d00ff;
   margin-right: 10px;
 }
 
-.userprofile h2 span{
+.userInfo h2 span{
   font-size: 1.1em;
   padding: 7px;
   color: white;
@@ -447,7 +447,7 @@
   margin-left: 100px;
 }
 
-.userprofile h2 span:hover {
+.userInfo h2 span:hover {
   background-color: #3f0065;
 }
 
@@ -500,21 +500,6 @@
   background-color: #3f0065;
 }
 
-.userprofile .change-pass {
-  color: white;
-  background-color: #9d00ff;
-  padding: 10px;
-  border-radius: 50px;
-  font-size: 1.2em;
-  width: fit-content;
-  border: #3f0065 solid 2px;
-  cursor: pointer;
-}
-
-.userprofile .change-pass:hover {
-  background-color: #3f0065;
-}
-
 .verification-form button {
   font-size: smaller;
   margin: 10px auto;
@@ -531,3 +516,43 @@
   margin: 10px auto;
 }
 
+.userprofile {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+
+.rank {
+  display: flex;
+  flex-direction: column;
+  border: gold groove 10px;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  width: 50%;
+  border-radius: 50px;
+  background-color: #795b32cc;
+}
+
+.rank img {
+  display: block;
+  width: 75%;
+  border: black groove 20px;
+  background-color: #8b8b8b;
+  padding: 10px;
+  border-radius: 50%;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.rank h2 {
+  display: block;
+  text-align: center;
+  font-size: 2em;
+  font-weight: bolder;
+  color: white;
+  font-family: 'Algerian';
+}
+
+.rank h3 {
+  color: #f2f2f2;
+}

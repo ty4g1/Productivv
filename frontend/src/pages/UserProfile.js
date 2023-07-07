@@ -149,15 +149,11 @@ const UserProfile = () => {
                     </div>
                 </div>}
             </div>
-            <div>
-                <div className="rank">
-                    <h1>Rank</h1>
-                    <img src={rank} alt={title}/>
-                    <h2>{title}</h2>
-                    <h3>{user.points} points</h3>
-                </div>
+            <div className="rank">
+                <img src={rank} alt={title}/>
+                <h2>{title}</h2>
+                <h3>{user.points} points</h3>
             </div>
-            
         </div>
      );
 }

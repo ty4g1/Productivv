@@ -15,7 +15,6 @@ export const useGoogleLogin = () => {
             body: JSON.stringify({email})
         });
         const json = await response.json();
-        console.log(json);
         if (!response.ok) {
             setisLoading(false);
             setError(json.error);
