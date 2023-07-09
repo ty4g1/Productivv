@@ -47,6 +47,10 @@ const TaskForm = () => {
             setError('Title cannot be empty');
             return
         }
+        if (startTime > endTime) {
+            setError('Start time cannot be after end time');
+            return
+        }
 
         const task = {title: title.trim(), startTime, endTime, color, tags: tags.map(tag => tag.value), priority};
         const response = await fetch('/api/tasks', {
@@ -84,17 +88,17 @@ const TaskForm = () => {
             <form onSubmit={handleSubmit}>
                 <h2>Add new task</h2>
                 <label>Title</label>
-                <input type="text" required onChange={e => setTitle(e.target.value)} value={title}/>
+                <input data-testid="title" type="text" required onChange={e => setTitle(e.target.value)} value={title}/>
                 <label>From</label>
-                <input type="datetime-local" required onChange={e => setStartTime(e.target.value)} value={startTime}/>
+                <input data-testid="start-time" type="datetime-local" required onChange={e => setStartTime(e.target.value)} value={startTime}/>
                 <label>To</label>
-                <input type="datetime-local" required onChange={e => setEndTime(e.target.value)} value={endTime}/>
+                <input data-testid="end-time" type="datetime-local" required onChange={e => setEndTime(e.target.value)} value={endTime}/>
                 <label>Task Color</label>
-                <div style={{backgroundColor: 'white', padding: '10px', marginTop: '10px', borderRadius: '20px'}}><CirclePicker color={color} onChangeComplete={(color) => setColor(color.hex)}/></div>
+                <div data-testid="color" style={{backgroundColor: 'white', padding: '10px', marginTop: '10px', borderRadius: '20px'}}><CirclePicker color={color} onChangeComplete={(color) => setColor(color.hex)}/></div>
                 <label style={{marginTop: '10px'}}>Tags</label>
-                <div style={{marginTop: '10px'}}><CreatableSelect value={tags} className='tags' options={options} closeMenuOnSelect={true} onChange={setTags} isMulti={true}></CreatableSelect></div>
+                <div data-testid="tags" style={{marginTop: '10px'}}><CreatableSelect value={tags} className='tags' options={options} closeMenuOnSelect={true} onChange={setTags} isMulti={true}></CreatableSelect></div>
                 <label style={{marginTop: '10px'}}>Priority</label>
-                <div style={{backgroundColor: 'white', padding: '10px 40px', marginTop: '10px', borderRadius: '20px'}}><Slider value={priority} onChange={(event, value, activeThumb) => setPriority(value)} marks={marks} color='secondary'></Slider></div>
+                <div data-testid="priority" style={{backgroundColor: 'white', padding: '10px 40px', marginTop: '10px', borderRadius: '20px'}}><Slider value={priority} onChange={(event, value, activeThumb) => setPriority(value)} marks={marks} color='secondary'></Slider></div>
                 <button>Add Task</button>
             </form>
             {error && <div className="error">{error}</div>}
