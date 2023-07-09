@@ -20,7 +20,7 @@ const TaskPopup = ({task, state}) => {
     }
     
     return ( 
-        <div className='task-popup-wrapper' onClick={async (e) => {
+        <div className='task-popup-wrapper' data-testid='task-popup-wrapper' onClick={async (e) => {
             if (e.target.className === 'task-popup-wrapper' 
                 || e.target.classList.contains('delete') || e.target.classList.contains('complete')) {
                 state(false);
@@ -28,7 +28,7 @@ const TaskPopup = ({task, state}) => {
                 await fetchTask();
                 state(false);
             }}}>
-            <div className='task-popup'>
+            <div className='task-popup' data-testid='task-popup'>
                 <TaskDesc task={event}/>
             </div>
         </div>
