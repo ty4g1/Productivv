@@ -54,11 +54,11 @@ const TaskEdit = ({ task, state }) => {
     return ( 
         <div className="task-edit-form" style={{backgroundColor: task.color}}>
             <form onSubmit={handleSubmit}>
-                <input type="text" className="h2-upd" required onChange={e => setTitle(e.target.value)} value={title}/>
-                <input type="datetime-local" className="p-upd" required onChange={e => setStartTime(e.target.value)} value={startTime}/>
-                <input type="datetime-local" className="p-upd" required onChange={e => setEndTime(e.target.value)} value={endTime}/>
-                <div style={{margin: '10px 0px', maxWidth: '50%'}}><CreatableSelect value={tags} className='tags' options={options} closeMenuOnSelect={true} onChange={setTags} isMulti={true}></CreatableSelect></div>
-                <input type="number" min="0" max="100" value={priority} onChange={(e) => setPriority(e.target.value)}/>
+                <input data-testid="title" type="text" className="h2-upd" required onChange={e => setTitle(e.target.value)} value={title}/>
+                <input data-testid="start-time" type="datetime-local" className="p-upd" required onChange={e => setStartTime(e.target.value)} value={startTime}/>
+                <input data-testid="end-time" type="datetime-local" className="p-upd" required onChange={e => setEndTime(e.target.value)} value={endTime}/>
+                <div data-testid="tags" style={{margin: '10px 0px', maxWidth: '50%'}}><CreatableSelect value={tags} className='tags' options={options} closeMenuOnSelect={true} onChange={setTags} isMulti={true}></CreatableSelect></div>
+                <input data-testid="priority" type="number" min="0" max="100" value={priority} onChange={(e) => setPriority(e.target.value)}/>
                 <button className="material-symbols-outlined done">done</button>
             </form>
             {error && <div className="error">{error}</div>}
