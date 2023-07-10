@@ -19,7 +19,7 @@ jest.mock('../../hooks/useAuthContext');
 
 describe('<Navbar />', () => {
     
-  it('renders the navbar with user links when user is verified', async () => {
+  test('renders the navbar with user links when user is verified', async () => {
     // Mock useAuthContext hook
     useAuthContext.mockReturnValue({
         user: { id: 'mockID', email: 'mockEmail', token: 'mocktoken', verified: true, google: false },
@@ -39,7 +39,7 @@ describe('<Navbar />', () => {
   });
   
 
-  it('renders the navbar with cancel button when user is not verified', async () => {
+  test('renders the navbar with cancel button when user is not verified', async () => {
     // Mock useAuthContext hook
     useAuthContext.mockReturnValue({
         user: { id: 'mockID', email: 'mockEmail', token: 'mocktoken', verified: false, google: false },
@@ -59,7 +59,7 @@ describe('<Navbar />', () => {
     expect(cancelButton).toBeInTheDocument();
   });
 
-  it('renders the navbar with login and signup links when user is not logged in', () => {
+  test('renders the navbar with login and signup links when user is not logged in', () => {
     // Mock useAuthContext hook
     useAuthContext.mockReturnValue({
         user: null,
