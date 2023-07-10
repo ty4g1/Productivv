@@ -37,7 +37,7 @@ describe('<TaskDesc />', () => {
     fetchMock.resetMocks();
   });
 
-  it('renders task details correctly', () => {
+  test('renders task details correctly', () => {
     render(<MockTaskDesc task={task} />);
 
     // Assert that task details are displayed correctly
