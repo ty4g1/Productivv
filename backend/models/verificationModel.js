@@ -29,7 +29,7 @@ verificationSchema.statics.sendVerification = async function(email) {
     const salt = await bcrypt.genSalt(10);   //append to end of code so idenctical codes have different hashes
     const hash = await bcrypt.hash(String(code), salt);
     //create verification
-    const verification = await this.create({email, code: hash});
+    const verification = await this.create({email, code: hash, createdAt: Date.now(), expiresAt: Date.now() + 3600000});
     //send email
     sendEmail(email, "Verify your email", `<p>Enter this code to verify your email: <b>${code}</b></p><br><p>Code expires in 1 hour</p>`);
 }
