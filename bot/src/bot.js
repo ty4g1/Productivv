@@ -2,6 +2,7 @@ require('dotenv').config()
 const { format } = require('date-fns');
 const { Telegraf } = require('telegraf');
 const { message } = require('telegraf/filters');
+const schedule = require('node-schedule');
 
 const fetchUser = async (username) => {
     const response = await fetch('https://productivv.onrender.com/api/user/find/' + username, {
@@ -35,7 +36,68 @@ const fetchTasks = async (token) => {
     }
 }
 
+// Define an array to store active chat contexts
+const activeContexts = [];
+
+// Function to schedule reminders for a specific context
+const scheduleRemindersForContext = async (ctx) => {
+    const tasks = await fetchTasks(ctx.state.user.token);
+    const tasksToday = tasks.filter(task => {
+        return format(new Date(task.startTime), "do MMM Y") === format(new Date(), "do MMM Y");
+    });
+  
+    // Iterate over the filtered tasks and schedule reminders
+    tasksToday.forEach(task => {
+        const reminderTime = new Date(task.startTime); // Use the relevant task property for the reminder time
+        reminderTime.setMinutes(reminderTime.getMinutes() - 30); // Set reminder time to 30 minutes before the task start time
+        console.log(`Scheduling reminder for task: ${task.title} at ${reminderTime}`);
+        const job = schedule.scheduleJob(reminderTime, () => {
+            sendReminder(ctx, `${task.title} in 30 mins \n from *${format(new Date(task.startTime), "hh:mm a")}* to *${format(new Date(task.endTime), "hh:mm a")}*`); // Use the relevant task property for the reminder text
+        });
+
+        // Print information about the scheduled job
+        console.log(job);
+    });
+  
+    console.log(`Reminders for today's tasks scheduled for chat ID: ${ctx.chat.id}`);
+};
+
+const sendReminder = (ctx, reminderText) => {
+    ctx.reply(`⏰ REMINDER: ${reminderText}`);
+};
+
+// Schedule reminders every day at 12 AM
+schedule.scheduleJob('0 0 * * *', async () => {
+    // Iterate over active chat contexts and schedule reminders for each
+    for (const ctx of bot.telegram._contextUpdateQueue) {
+      await scheduleReminders(ctx);
+    }
+});
+
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
+
+// Handler for incoming messages to track active chat contexts
+bot.on('message', (ctx, next) => {
+    if (!activeContexts.includes(ctx)) {
+        activeContexts.push(ctx);
+        console.log(`Chat ID ${ctx.chat.id} added to active contexts.`);
+    }
+    next();
+});
+
+// Function to schedule reminders for all active chat contexts
+const scheduleRemindersForAllContexts = async () => {
+    for (const ctx of activeContexts) {
+        console.log(`Scheduling reminders for chat ID: ${ctx.chat.id}`);
+        await scheduleRemindersForContext(ctx);
+    }
+};
+  
+// Schedule reminders every day at 12 AM
+schedule.scheduleJob('0 0 * * *', async () => {
+    console.log('Scheduling reminders for all active contexts.');
+    await scheduleRemindersForAllContexts();
+});
 
 bot.use(async (ctx, next) => {
     const response = await fetchUser(ctx.from.username);
@@ -48,9 +110,17 @@ bot.use(async (ctx, next) => {
         return next();
     }
 });
-bot.start((ctx) => ctx.reply('Welcome!'));
 
+bot.start(async (ctx) => {
+    await ctx.reply('Welcome to Productivv! You can use the following commands: \n\n /today - View your tasks for today \n /schedule - Schedule reminders for today\'s tasks');
+    await ctx.reply('Reminders are scheduled for tasks at 12 AM everyday.\nIf you have added tasks after 12 AM today, you can use the /schedule command to schedule reminders for them.');
+    ctx.reply('You will receive reminders 30 minutes before the start time of each task.');
+});
 
+bot.command('schedule', async (ctx) => {
+    await scheduleRemindersForContext(ctx);
+    ctx.reply('Reminders for today\'s tasks scheduled.');
+});
 
 bot.command('today', async (ctx) => {
     const tasks = await fetchTasks(ctx.state.user.token);
@@ -108,6 +178,24 @@ bot.action('date', async (ctx) => {
         });
     });
 });
+
+bot.command('remind', (ctx) => {
+    // Extract the reminder details from the message
+    const messageText = ctx.message.text;
+    const reminderText = messageText.substring(7); // Remove the "/remind " part of the command
+  
+    // Set the reminder time (e.g., 10 seconds from now)
+    const reminderTime = new Date();
+    reminderTime.setSeconds(reminderTime.getSeconds() + 10); // Set the reminder time here
+  
+    // Schedule the reminder
+    schedule.scheduleJob(reminderTime, () => {
+      sendReminder(ctx, reminderText);
+    });
+  
+    ctx.reply(`✅ Reminder set for "${reminderText}"`);
+});
+
 bot.help((ctx) => ctx.reply('Send me a sticker'));
 bot.on(message('sticker'), (ctx) => ctx.reply('👍'));
 bot.hears('hi', (ctx) => ctx.reply('Hey there'));
