@@ -3,6 +3,7 @@ const { format } = require('date-fns');
 const { Telegraf } = require('telegraf');
 const { message } = require('telegraf/filters');
 const schedule = require('node-schedule');
+const fetch = require('node-fetch');
 
 const fetchUser = async (username) => {
     const response = await fetch('https://productivv.onrender.com/api/user/find/' + username, {
