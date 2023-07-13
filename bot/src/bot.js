@@ -2,7 +2,7 @@ import { Telegraf } from 'telegraf';
 import schedule from 'node-schedule';
 import fetch from 'node-fetch';
 import { format } from 'date-fns';
-import 'dotenv/config'
+import 'dotenv/config';
 
 const fetchUser = async (username) => {
     const response = await fetch('https://productivv.onrender.com/api/user/find/' + username, {

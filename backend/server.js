@@ -19,6 +19,11 @@ app.use('/api/tasks',taskRoutes);
 app.use('/api/user',userRoutes);
 app.use('/api/reset', resetRoutes);
 
+//test route
+app.get('/', (req, res) => {
+    res.send('req received')
+});
+
 
 //connect to db
 mongoose.connect(process.env.MONGO_URI)
