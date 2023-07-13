@@ -89,14 +89,6 @@ const sendReminder = (ctx, reminderText) => {
     ctx.reply(`⏰ REMINDER: ${reminderText} \n \n in 30 mins`, { parse_mode: 'Markdown' });
 };
 
-// Schedule reminders every day at 12 AM
-schedule.scheduleJob('0 0 * * *', async () => {
-    // Iterate over active chat contexts and schedule reminders for each
-    for (const ctx of bot.telegram._contextUpdateQueue) {
-      await scheduleReminders(ctx);
-    }
-});
-
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
 
 // Handler for incoming messages to track active chat contexts
@@ -207,9 +199,5 @@ bot.action('date', async (ctx) => {
     });
 });
 
-
-bot.help((ctx) => ctx.reply('Send me a sticker'));
-bot.on(message('sticker'), (ctx) => ctx.reply('👍'));
-bot.hears('hi', (ctx) => ctx.reply('Hey there'));
 bot.launch();
 
