@@ -1,9 +1,8 @@
-require('dotenv').config()
-const { format } = require('date-fns');
-const { Telegraf } = require('telegraf');
-const { message } = require('telegraf/filters');
-const schedule = require('node-schedule');
+import { Telegraf } from 'telegraf';
+import schedule from 'node-schedule';
 import fetch from 'node-fetch';
+import { format } from 'date-fns';
+import 'dotenv/config'
 
 const fetchUser = async (username) => {
     const response = await fetch('https://productivv.onrender.com/api/user/find/' + username, {
