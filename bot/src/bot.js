@@ -39,31 +39,54 @@ const fetchTasks = async (token) => {
 // Define an array to store active chat contexts
 const activeContexts = [];
 
+// Define an array to store scheduled jobs
+const scheduledJobs = [];
+
 // Function to schedule reminders for a specific context
 const scheduleRemindersForContext = async (ctx) => {
     const tasks = await fetchTasks(ctx.state.user.token);
     const tasksToday = tasks.filter(task => {
         return format(new Date(task.startTime), "do MMM Y") === format(new Date(), "do MMM Y");
     });
-  
+    const jobs = []
     // Iterate over the filtered tasks and schedule reminders
     tasksToday.forEach(task => {
         const reminderTime = new Date(task.startTime); // Use the relevant task property for the reminder time
         reminderTime.setMinutes(reminderTime.getMinutes() - 30); // Set reminder time to 30 minutes before the task start time
         console.log(`Scheduling reminder for task: ${task.title} at ${reminderTime}`);
         const job = schedule.scheduleJob(reminderTime, () => {
-            sendReminder(ctx, `${task.title} in 30 mins \n from *${format(new Date(task.startTime), "hh:mm a")}* to *${format(new Date(task.endTime), "hh:mm a")}*`); // Use the relevant task property for the reminder text
+            sendReminder(ctx, `${task.title} \n
+            from *${format(new Date(task.startTime), "hh:mm a")}* on *${format(new Date(task.startTime), "do MMM Y")}* \n
+            to *${format(new Date(task.endTime), "hh:mm a")}* on *${format(new Date(task.endTime), "do MMM Y")}* \n
+            with tags:${task.tags.map(tag => ` *${tag}* `)}, priority: *${task.priority}*`);
         });
+        jobs.push(job);
 
         // Print information about the scheduled job
         console.log(job);
     });
-  
+    scheduledJobs.push({ref: ctx.chat.id, jobs});
     console.log(`Reminders for today's tasks scheduled for chat ID: ${ctx.chat.id}`);
 };
 
+//function to cancel reminders for a specific context
+const cancelRemindersForContext = async (ctx) => {
+    console.log(scheduledJobs);
+    scheduledJobs.forEach(ctx_obj => {
+        if (ctx_obj.ref === ctx.chat.id) {
+            ctx_obj.jobs.forEach(job => {
+                job && job.cancel();
+            });
+            scheduledJobs.splice(scheduledJobs.indexOf(ctx_obj), 1);
+        }
+
+    });
+    console.log(`Reminders for today's tasks cancelled for chat ID: ${ctx.chat.id}`);
+};
+        
+
 const sendReminder = (ctx, reminderText) => {
-    ctx.reply(`⏰ REMINDER: ${reminderText}`);
+    ctx.reply(`⏰ REMINDER: ${reminderText} \n \n in 30 mins`, { parse_mode: 'Markdown' });
 };
 
 // Schedule reminders every day at 12 AM
@@ -112,14 +135,20 @@ bot.use(async (ctx, next) => {
 });
 
 bot.start(async (ctx) => {
-    await ctx.reply('Welcome to Productivv! You can use the following commands: \n\n /today - View your tasks for today \n /schedule - Schedule reminders for today\'s tasks');
+    await ctx.reply('Welcome to Productivv! You can use the following commands: \n\n /today - View your tasks for today \n /schedule - Schedule reminders for today\'s tasks \n /cancel - Cancel reminders for today\'s tasks');
     await ctx.reply('Reminders are scheduled for tasks at 12 AM everyday.\nIf you have added tasks after 12 AM today, you can use the /schedule command to schedule reminders for them.');
     ctx.reply('You will receive reminders 30 minutes before the start time of each task.');
 });
 
 bot.command('schedule', async (ctx) => {
+    await cancelRemindersForContext(ctx);
     await scheduleRemindersForContext(ctx);
     ctx.reply('Reminders for today\'s tasks scheduled.');
+});
+
+bot.command('cancel', async (ctx) => {
+    await cancelRemindersForContext(ctx);
+    ctx.reply('Reminders for today\'s tasks cancelled.');
 });
 
 bot.command('today', async (ctx) => {
@@ -153,7 +182,7 @@ bot.action('prio', async (ctx) => {
         return a.priority - b.priority;
     });
     tasks_today.forEach(task => {
-        ctx.reply(`${task.title} from *${format(new Date(task.startTime), "hh:mm a")}* on *${format(new Date(task.startTime), "do MMM Y")}* to *${format(new Date(task.endTime), "hh:mm a")}* on *${format(new Date(task.endTime), "do MMM Y")}*, with tags:${task.tags.map(tag => ` *${tag}* `)}, priority: *${task.priority}*`,
+        ctx.reply(`${task.title} \nfrom *${format(new Date(task.startTime), "hh:mm a")}* \non *${format(new Date(task.startTime), "do MMM Y")}* \nto *${format(new Date(task.endTime), "hh:mm a")}* \non *${format(new Date(task.endTime), "do MMM Y")}* \nwith tags:${task.tags.map(tag => ` *${tag}* `)} \npriority: *${task.priority}*`,
         {
             parse_mode: 'Markdown'
         });
@@ -171,30 +200,13 @@ bot.action('date', async (ctx) => {
         return new Date(a.startTime) - new Date(b.startTime);
     });
     tasks_today.forEach(task => {
-        
-        ctx.reply(`${task.title} from *${format(new Date(task.startTime), "hh:mm a")}* on *${format(new Date(task.startTime), "do MMM Y")}* to *${format(new Date(task.endTime), "hh:mm a")}* on *${format(new Date(task.endTime), "do MMM Y")}*, with tags:${task.tags.map(tag => ` *${tag}* `)}, priority: *${task.priority}*`,
+        ctx.reply(`${task.title} \nfrom *${format(new Date(task.startTime), "hh:mm a")}* \non *${format(new Date(task.startTime), "do MMM Y")}* \nto *${format(new Date(task.endTime), "hh:mm a")}* \non *${format(new Date(task.endTime), "do MMM Y")}* \nwith tags:${task.tags.map(tag => ` *${tag}* `)} \npriority: *${task.priority}*`,
         {
             parse_mode: 'Markdown'
         });
     });
 });
 
-bot.command('remind', (ctx) => {
-    // Extract the reminder details from the message
-    const messageText = ctx.message.text;
-    const reminderText = messageText.substring(7); // Remove the "/remind " part of the command
-  
-    // Set the reminder time (e.g., 10 seconds from now)
-    const reminderTime = new Date();
-    reminderTime.setSeconds(reminderTime.getSeconds() + 10); // Set the reminder time here
-  
-    // Schedule the reminder
-    schedule.scheduleJob(reminderTime, () => {
-      sendReminder(ctx, reminderText);
-    });
-  
-    ctx.reply(`✅ Reminder set for "${reminderText}"`);
-});
 
 bot.help((ctx) => ctx.reply('Send me a sticker'));
 bot.on(message('sticker'), (ctx) => ctx.reply('👍'));
