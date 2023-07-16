@@ -64,8 +64,9 @@ const scheduleRemindersForContext = async (ctx) => {
   // Iterate over the filtered tasks and schedule reminders
   tasksToday.forEach(task => {
 
-    const reminderTime = moment.tz(task.startTime.setMinutes, timezone).toDate(); // Convert to user's timezone
+    const reminderTime = moment.tz(task.startTime, timezone).toDate(); // Convert to user's timezone
     reminderTime.setMinutes(reminderTime.getMinutes() - 30); // Set reminder 30 minutes before task start time
+
     console.log(`Scheduling reminder for task: ${task.title} at ${reminderTime}`);
     const job = schedule.scheduleJob(reminderTime, () => {
       sendReminder(ctx, `${task.title} \n
@@ -121,8 +122,8 @@ const scheduleRemindersForAllContexts = async () => {
   }
 };
 
-// Schedule reminders every day at 12 AM
-schedule.scheduleJob('0 0 * * *', async () => {
+// Schedule reminders every hour
+schedule.scheduleJob('0 * * * *', async () => {
   console.log('Scheduling reminders for all active contexts.');
   await scheduleRemindersForAllContexts();
 });
@@ -141,7 +142,7 @@ bot.use(async (ctx, next) => {
 
 bot.start(async (ctx) => {
   await ctx.reply('Welcome to Productivv! You can use the following commands: \n\n /today - View your tasks for today \n /schedule - Schedule reminders for today\'s tasks \n /cancel - Cancel reminders for today\'s tasks');
-  await ctx.reply('Reminders are scheduled for tasks at 12 AM everyday.\nIf you have added tasks after 12 AM today, you can use the /schedule command to schedule reminders for them.');
+  await ctx.reply('Reminders are scheduled for tasks every hour.\nIf you have added tasks recently, you can use the /schedule command to schedule reminders for them.');
   await ctx.reply('You will receive reminders 30 minutes before the start time of each task.');
   await ctx.reply('Your timezone is set to: ' + ctx.state.user.timezone);
   ctx.reply('You can change your timezone from the user profile page on the productivv web app.');
@@ -192,7 +193,7 @@ bot.action('prio', async (ctx) => {
   if (!tasks_today || tasks_today.length === 0) {
     return ctx.reply("You don't have any tasks today!");
   }
-  ctx.reply('These are your current tasks by priority:');
+  await ctx.reply('These are your current tasks by priority:');
   await tasks_today.sort((a, b) => {
     return a.priority - b.priority;
   });
@@ -213,7 +214,7 @@ bot.action('date', async (ctx) => {
   if (!tasks_today || tasks_today.length === 0) {
     return ctx.reply("You don't have any tasks today!");
   }
-  ctx.reply('These are your current tasks by date:');
+  await ctx.reply('These are your current tasks by date:');
   await tasks_today.sort((a, b) => {
     return new Date(a.startTime) - new Date(b.startTime);
   });
@@ -227,7 +228,7 @@ bot.action('date', async (ctx) => {
 
 bot.help(async (ctx) => {
   await ctx.reply('Welcome to Productivv! You can use the following commands: \n\n /today - View your tasks for today \n /schedule - Schedule reminders for today\'s tasks \n /cancel - Cancel reminders for today\'s tasks');
-  await ctx.reply('Reminders are scheduled for tasks at 12 AM everyday.\nIf you have added tasks after 12 AM today, you can use the /schedule command to schedule reminders for them.');
+  await ctx.reply('Reminders are scheduled for tasks every hour.\nIf you have added tasks recently, you can use the /schedule command to schedule reminders for them.');
   await ctx.reply('You will receive reminders 30 minutes before the start time of each task.');
   await ctx.reply('Your timezone is set to: ' + ctx.state.user.timezone);
   ctx.reply('You can change your timezone from the user profile page on the productivv web app.');
