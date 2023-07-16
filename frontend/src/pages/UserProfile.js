@@ -161,7 +161,7 @@ const UserProfile = () => {
                         <div className='editProfile'>
                             <form id='edit-timezone' onSubmit={handleSubmit}>
                                 <label>Timezone: </label>
-                                <select name="timezone" id="timezone" onChange={(e) => setTimezone(e.target.value)}>
+                                <select value={timezone} name="timezone" id="timezone" onChange={(e) => setTimezone(e.target.value)}>
                                     {timezoneList.map((timezone, index) => <option key={index} value={timezone}>{timezone}</option>)}
                                 </select>
                                 <button className="material-symbols-outlined done">done</button>
