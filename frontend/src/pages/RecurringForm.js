@@ -94,6 +94,17 @@ const RecurringForm = () => {
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
+        //check if date range is more than a year
+        if (new Date(endDate).getTime() - new Date(startDate).getTime() > 1000*60*60*24*365) {
+            setError('Date range for weekly tasks cannot be more than a year');
+            return;
+        }
+        //check if date range for daily tasks is more than a month
+        if (freq.value === 'daily' && new Date(endDate).getTime() - new Date(startDate).getTime() > 1000*60*60*24*30) {
+            setError('Date range for daily tasks cannot be more than a month');
+            return;
+        }
+
         const tasks = createTasks(title, freq.value, start, end, startDate, endDate, color, tags, priority);
         tasks.forEach(async task => {
             console.log(task);
@@ -146,7 +157,7 @@ const RecurringForm = () => {
             <div style={{backgroundColor: 'white', padding: '10px 40px', marginTop: '10px', borderRadius: '20px'}}><Slider value={priority} onChange={(event, value, activeThumb) => setPriority(value)} marks={marks} color='secondary'></Slider></div>
         </div>
         <button type="submit">Add</button>
-        {error && <p>{error}</p>}
+        {error && <div className='error'>{error}</div>}
     </form>
     );
 }

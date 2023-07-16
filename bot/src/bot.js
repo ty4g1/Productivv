@@ -64,8 +64,8 @@ const scheduleRemindersForContext = async (ctx) => {
   // Iterate over the filtered tasks and schedule reminders
   tasksToday.forEach(task => {
 
-    const reminderTime = moment.tz(task.startTime, timezone).toDate(); // Convert to user's timezone
-
+    const reminderTime = moment.tz(task.startTime.setMinutes, timezone).toDate(); // Convert to user's timezone
+    reminderTime.setMinutes(reminderTime.getMinutes() - 30); // Set reminder 30 minutes before task start time
     console.log(`Scheduling reminder for task: ${task.title} at ${reminderTime}`);
     const job = schedule.scheduleJob(reminderTime, () => {
       sendReminder(ctx, `${task.title} \n
