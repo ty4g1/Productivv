@@ -31,6 +31,11 @@ export const tasksReducer = (state, action) => {
                 tasks: state.tasks.map(task => task._id !== action.payload._id ? task : action.payload)
             };
         }
+        case 'CLEAR_COMPLETED': {
+            return {
+                tasks: state.tasks.filter(task => !task.completed)
+            };
+        }
         default:
             return state;
     }

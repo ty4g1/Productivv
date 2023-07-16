@@ -306,6 +306,25 @@
   background-color: #9d00ff;
 }
 
+.completed button {
+  background-color: #9d00ff;
+  font-size: 0.9em;
+  text-decoration: none;
+  display: inline-block;
+  border: 2px black solid;
+  border-radius: 50px;
+  padding: 10px;
+  color: white;
+  font-weight: bolder;
+  
+}
+
+.completed button:hover {
+  cursor: pointer;
+  background-color: #3f0065;
+  
+}
+
 .calendar {
   display: grid;
   grid-template-columns: 3fr 1fr;
