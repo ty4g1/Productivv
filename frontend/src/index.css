@@ -306,7 +306,7 @@
   background-color: #9d00ff;
 }
 
-.completed button {
+.completed button, .pastdue .clear {
   background-color: #9d00ff;
   font-size: 0.9em;
   text-decoration: none;
@@ -319,7 +319,7 @@
   
 }
 
-.completed button:hover {
+.completed button:hover, .pastdue .clear:hover {
   cursor: pointer;
   background-color: #3f0065;
   
