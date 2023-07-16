@@ -142,7 +142,9 @@ bot.use(async (ctx, next) => {
 bot.start(async (ctx) => {
   await ctx.reply('Welcome to Productivv! You can use the following commands: \n\n /today - View your tasks for today \n /schedule - Schedule reminders for today\'s tasks \n /cancel - Cancel reminders for today\'s tasks');
   await ctx.reply('Reminders are scheduled for tasks at 12 AM everyday.\nIf you have added tasks after 12 AM today, you can use the /schedule command to schedule reminders for them.');
-  ctx.reply('You will receive reminders 30 minutes before the start time of each task.');
+  await ctx.reply('You will receive reminders 30 minutes before the start time of each task.');
+  await ctx.reply('Your timezone is set to: ' + ctx.state.user.timezone);
+  ctx.reply('You can change your timezone from the user profile page on the productivv web app.');
 });
 
 bot.command('schedule', async (ctx) => {
