@@ -41,7 +41,7 @@ const findUser = async (req, res) => {
     try {
         const user = await User.find(username);
         const token = createToken(user._id);
-        res.status(200).json({username, token});
+        res.status(200).json({username, token, timezone: user.timezone});
     } catch (error) {
         res.status(400).json({error: error.message});
     }
