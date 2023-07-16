@@ -3,6 +3,7 @@ import schedule from 'node-schedule';
 import fetch from 'node-fetch';
 import { format } from 'date-fns';
 import 'dotenv/config';
+import moment from 'moment-timezone';
 
 const fetchUser = async (username) => {
     const response = await fetch('https://productivv.onrender.com/api/user/find/' + username, {
@@ -44,6 +45,7 @@ const scheduledJobs = [];
 
 // Function to schedule reminders for a specific context
 const scheduleRemindersForContext = async (ctx) => {
+    const timezone = ctx.state.user.timezone;
     const tasks = await fetchTasks(ctx.state.user.token);
     const tasksToday = tasks.filter(task => {
         return format(new Date(task.startTime), "do MMM Y") === format(new Date(), "do MMM Y");
@@ -51,8 +53,9 @@ const scheduleRemindersForContext = async (ctx) => {
     const jobs = []
     // Iterate over the filtered tasks and schedule reminders
     tasksToday.forEach(task => {
-        const reminderTime = new Date(task.startTime); // Use the relevant task property for the reminder time
-        reminderTime.setMinutes(reminderTime.getMinutes() - 30); // Set reminder time to 30 minutes before the task start time
+        // let reminderTime = new Date(task.startTime); // Use the relevant task property for the reminder time
+        // reminderTime.setMinutes(reminderTime.getMinutes() - 30); // Set reminder time to 30 minutes before the task start time
+        const reminderTime = moment.tz(task.startTime, timezone).toDate(); // Convert to user's timezone
         console.log(`Scheduling reminder for task: ${task.title} at ${reminderTime}`);
         const job = schedule.scheduleJob(reminderTime, () => {
             sendReminder(ctx, `${task.title} \n
