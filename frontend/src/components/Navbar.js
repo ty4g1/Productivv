@@ -5,6 +5,9 @@ const Navbar = () => {
     const { logout } = useLogout();
     const { user, dispatch } = useAuthContext();
     const handleClick = () => {
+        if (!window.confirm('Are you sure you want to log out?')) {
+            return
+        }
         logout();
     }
     const handleClickDel = async () => {
