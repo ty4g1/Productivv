@@ -91,12 +91,12 @@ const UserProfile = () => {
             case 'edit-username':
                 setUsername(e.target.children[1].value);
                 setEditUsername(false);
-                updateProfile({email, username, tele_id: tele});
+                updateProfile({email, username, tele_id: tele, timezone});
                 break;
             case 'edit-tele':
                 setTele(e.target.children[1].value);
                 setEditTele(false);
-                updateProfile({email, username, tele_id: tele});
+                updateProfile({email, username, tele_id: tele, timezone});
                 break;
             case 'edit-timezone':
                 setTimezone(e.target.children[1].value);
@@ -119,6 +119,7 @@ const UserProfile = () => {
                 setUsername(profile.username);
                 setEmail(profile.email);
                 setTele(profile.tele_id);
+                setTimezone(profile.timezone);
                 setIsLoading(false);
             }
         }

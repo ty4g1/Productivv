@@ -119,7 +119,7 @@ userSchema.statics.updateProfile = async function(body) {
     if (!body) {
         throw Error(`All fields must be filled`);
     }
-    const user = await this.findOneAndUpdate({email: body.email}, {username: body.username, tele_id: body.tele_id});
+    const user = await this.findOneAndUpdate({email: body.email}, {username: body.username, tele_id: body.tele_id, timezone: body.timezone});
     if (!user) {
         throw Error('Incorrect email');
     }
