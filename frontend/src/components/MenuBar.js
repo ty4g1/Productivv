@@ -8,6 +8,7 @@ const MenuBar = () => {
                 <Link to='/form-recurring'>Create Recurring Tasks</Link>
                 <Link to='/completed'>Completed Tasks</Link>
                 <Link to='/past-due'>Past Due Tasks</Link>
+                <a class="telegram-button" href="https://t.me/ProductivvBot" target="_blank"><i></i><span>@ProductivvBot</span></a>
             </div>
         </nav>
      );
