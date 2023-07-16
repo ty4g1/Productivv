@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
-
+import moment from 'moment-timezone';
 //import ranks
 import bronze_4 from '../img/ranks/bronze/4.png'
 import bronze_3 from '../img/ranks/bronze/3.png'
@@ -15,16 +15,20 @@ import gold_3 from '../img/ranks/gold/3.png'
 import gold_2 from '../img/ranks/gold/2.png'
 import gold_1 from '../img/ranks/gold/1.png'
 
+const timezoneList = moment.tz.names();
+
 
 const UserProfile = () => {
     const [editUsername, setEditUsername] = useState(false);
     const [editTele, setEditTele] = useState(false);
+    const [editTimezone, setEditTimezone] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [tele, setTele] = useState('');
     const [rank, setRank] = useState(null);
     const [title, setTitle] = useState('');
+    const [timezone, setTimezone] = useState('');
     const { user } = useAuthContext();
     const updateProfile = async (body) => {
         await fetch('/api/user/update', {
@@ -94,6 +98,11 @@ const UserProfile = () => {
                 setEditTele(false);
                 updateProfile({email, username, tele_id: tele});
                 break;
+            case 'edit-timezone':
+                setTimezone(e.target.children[1].value);
+                setEditTimezone(false);
+                updateProfile({email, username, tele_id: tele, timezone});
+                break;
             default:
                 break;
         }
@@ -146,6 +155,20 @@ const UserProfile = () => {
                                 <button className="material-symbols-outlined done">done</button>
                             </form>
                         </div>}
+                        {!editTimezone && <h2><b>Timezone:</b> {timezone} <span className="material-symbols-outlined edit" onClick={() => window.confirm('Are you sure you want to change your timezone?') && setEditTimezone(true)}>edit</span></h2>}
+                        {editTimezone &&
+                        <div className='editProfile'>
+                            <form id='edit-timezone' onSubmit={handleSubmit}>
+                                <label>Timezone: </label>
+                                <select name="timezone" id="timezone" onChange={(e) => setTimezone(e.target.value)}>
+                                    {timezoneList.map((timezone, index) => <option key={index} value={timezone}>{timezone}</option>)}
+                                </select>
+                                <button className="material-symbols-outlined done">done</button>
+                            </form>
+                        </div>}
+
+
+
                     </div>
                 </div>}
             </div>
