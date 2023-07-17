@@ -123,10 +123,10 @@ const scheduleRemindersForAllContexts = async () => {
 };
 
 // Schedule reminders every hour
-schedule.scheduleJob('0 * * * *', async () => {
+setInterval(async () => {
   console.log('Scheduling reminders for all active contexts.');
   await scheduleRemindersForAllContexts();
-});
+}, 1000 * 60 * 60);
 
 bot.use(async (ctx, next) => {
   const response = await fetchUser(ctx.from.username);
