@@ -6,7 +6,7 @@ import 'dotenv/config';
 import express from 'express';
 import moment from 'moment-timezone';
 
-const app = express()
+const app = express();
 
 app.get('/', (req, res) => {
   res.send('req received')
@@ -15,6 +15,9 @@ app.listen(3000, () => {
   console.log("Server running at port 3000")
 });
 
+const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
+
+// fetchUser and fetchTasks functions to call the productivv app API using 'fetch'
 const fetchUser = async (username) => {
   const response = await fetch('https://productivv.onrender.com/api/user/find/' + username, {
     headers: {
@@ -103,8 +106,6 @@ const sendReminder = (ctx, reminderText) => {
   ctx.reply(`⏰ REMINDER: ${reminderText} \n \n in 30 mins`, { parse_mode: 'Markdown' });
 };
 
-const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
-
 // Handler for incoming messages to track active chat contexts
 bot.on('message', async (ctx, next) => {
   const filteredContext = activeContexts.filter(ctxObj => ctxObj.chat.id === ctx.chat.id);
@@ -133,21 +134,13 @@ schedule.scheduleJob('30 * * * *', async () => {
 bot.use(async (ctx, next) => {
   const response = await fetchUser(ctx.from.username);
   if (response.error) {
-    return ctx.reply('You are not registered! Go to the user profile page on the productivv web app, and add your telegram username.');
+    return ctx.reply('You are not registered! Go to the user profile page on the Productivv web app and add your telegram username.');
   } else if (response === 'Incorrect telegram username') {
-    return ctx.reply('You are not registered! Go to the user profile page on the productivv web app, and add your telegram username.');
+    return ctx.reply('You are not registered! Go to the user profile page on the Productivv web app and add your telegram username.');
   } else {
     ctx.state.user = response;
     return next();
   }
-});
-
-bot.start(async (ctx) => {
-  await ctx.reply('Welcome to Productivv! You can use the following commands: \n\n /today - View your tasks for today \n /schedule - Schedule reminders for today\'s tasks \n /cancel - Cancel reminders for today\'s tasks');
-  await ctx.reply('Reminders are scheduled for tasks every hour.\nIf you have added tasks recently, you can use the /schedule command to schedule reminders for them.');
-  await ctx.reply('You will receive reminders 30 minutes before the start time of each task.');
-  await ctx.reply('Your timezone is set to: ' + ctx.state.user.timezone);
-  ctx.reply('You can change your timezone from the user profile page on the productivv web app.');
 });
 
 bot.command('schedule', async (ctx) => {
@@ -159,10 +152,6 @@ bot.command('schedule', async (ctx) => {
 bot.command('cancel', async (ctx) => {
   await cancelRemindersForContext(ctx);
   ctx.reply('Reminders for today\'s tasks cancelled.');
-});
-
-bot.command('test', async (ctx) => {
-  console.log(scheduledJobs);
 });
 
 bot.command('today', async (ctx) => {
@@ -179,7 +168,8 @@ bot.command('today', async (ctx) => {
         inline_keyboard: [
           [
             { text: 'Priority', callback_data: 'prio' },
-            { text: 'Date', callback_data: 'date' }
+            { text: 'Start Time', callback_data: 'start'},
+            { text: 'End Time', callback_data: 'end'}
           ]
         ]
       }
@@ -200,42 +190,74 @@ bot.action('prio', async (ctx) => {
     return a.priority - b.priority;
   });
   tasks_today.forEach(task => {
-    ctx.reply(`${task.title} \nfrom *${format(new Date(task.startTime), "hh:mm a")}* \non *${format(new Date(task.startTime), "do MMM Y")}* \nto *${format(new Date(task.endTime), "hh:mm a")}* \non *${format(new Date(task.endTime), "do MMM Y")}* \nwith tags:${task.tags.map(tag => ` *${tag}* `)} \npriority: *${task.priority}*`,
+    ctx.reply(`${task.title} \nfrom *${format(new Date(task.startTime), "hh:mm a")}*, *${format(new Date(task.startTime), "do MMM Y")}* \nto *${format(new Date(task.endTime), "hh:mm a")}*, *${format(new Date(task.endTime), "do MMM Y")}* \nwith tags:${task.tags.map(tag => ` *${tag}* `)} \npriority: *${task.priority}*`,
       {
         parse_mode: 'Markdown'
       });
   });
 });
 
-bot.action('date', async (ctx) => {
+bot.action('start', async (ctx) => {
   ctx.answerCbQuery();
   const tasks = await fetchTasks(ctx.state.user.token);
   const tasks_today = tasks.filter(task => {
     return !task.completed && format(new Date(task.startTime), "do MMM Y") === format(new Date(), "do MMM Y");
   });
   if (!tasks_today || tasks_today.length === 0) {
-    return ctx.reply("You don't have any tasks today!");
+    return ctx.reply("You don't have any tasks for today!");
   }
-  await ctx.reply('These are your current tasks by date:');
+  await ctx.reply('These are your current tasks by starting time:');
   await tasks_today.sort((a, b) => {
     return new Date(a.startTime) - new Date(b.startTime);
   });
   tasks_today.forEach(task => {
-    ctx.reply(`${task.title} \nfrom *${format(new Date(task.startTime), "hh:mm a")}* \non *${format(new Date(task.startTime), "do MMM Y")}* \nto *${format(new Date(task.endTime), "hh:mm a")}* \non *${format(new Date(task.endTime), "do MMM Y")}* \nwith tags:${task.tags.map(tag => ` *${tag}* `)} \npriority: *${task.priority}*`,
+    ctx.reply(`${task.title} \nfrom *${format(new Date(task.startTime), "hh:mm a")}*, *${format(new Date(task.startTime), "do MMM Y")}* \nto *${format(new Date(task.endTime), "hh:mm a")}*, *${format(new Date(task.endTime), "do MMM Y")}* \nwith tags:${task.tags.map(tag => ` *${tag}* `)} \npriority: *${task.priority}*`,
       {
         parse_mode: 'Markdown'
       });
   });
 });
 
-bot.help(async (ctx) => {
-  await ctx.reply('Welcome to Productivv! You can use the following commands: \n\n /today - View your tasks for today \n /schedule - Schedule reminders for today\'s tasks \n /cancel - Cancel reminders for today\'s tasks');
-  await ctx.reply('Reminders are scheduled for tasks every hour.\nIf you have added tasks recently, you can use the /schedule command to schedule reminders for them.');
+bot.action('end', async (ctx) => {
+  ctx.answerCbQuery();
+  const tasks = await fetchTasks(ctx.state.user.token);
+  const tasks_today = tasks.filter(task => {
+    return !task.completed && format(new Date(task.endTime), "do MMM Y") === format(new Date(), "do MMM Y");
+  });
+  if (!tasks_today || tasks_today.length === 0) {
+    return ctx.reply("You don't have any tasks for today!");
+  }
+  await ctx.reply('These are your current tasks by ending time:');
+  await tasks_today.sort((a, b) => {
+    return new Date(a.endTime) - new Date(b.endTime);
+  });
+  tasks_today.forEach(task => {
+    ctx.reply(`${task.title} \nfrom *${format(new Date(task.startTime), "hh:mm a")}*, *${format(new Date(task.startTime), "do MMM Y")}* \nto *${format(new Date(task.endTime), "hh:mm a")}*, *${format(new Date(task.endTime), "do MMM Y")}* \nwith tags:${task.tags.map(tag => ` *${tag}* `)} \npriority: *${task.priority}*`,
+      {
+        parse_mode: 'Markdown'
+      });
+  });
+});
+
+// Basic commands and  
+bot.start(async (ctx) => {
+  await ctx.reply('Welcome to Productivv! Firstly, ensure that your telegram account is linked to your Productivv account on the web app. You may do this by entering your Telegram username in the \'user profile\' page on the web app.');
+  await ctx.reply('You can use the following commands: \n\n /today - View your tasks for today \n /schedule - Schedule reminders for today\'s tasks \n /cancel - Cancel reminders for today\'s tasks');
   await ctx.reply('You will receive reminders 30 minutes before the start time of each task.');
   await ctx.reply('Your timezone is set to: ' + ctx.state.user.timezone);
   ctx.reply('You can change your timezone from the user profile page on the productivv web app.');
 });
 
+bot.help(async (ctx) => {
+  await ctx.reply('Welcome to Productivv! Firstly, ensure that your telegram account is linked to your Productivv account on the web app. You may do this by entering your Telegram username in the \'user profile\' page on the web app.');
+  await ctx.reply('You can use the following commands: \n\n /today - View your tasks for today \n /schedule - Schedule reminders for today\'s tasks \n /cancel - Cancel reminders for today\'s tasks');
+  await ctx.reply('Reminders are scheduled for tasks every hour.\nIf you have added tasks recently, you can use the /schedule command to schedule reminders for them.');
+  await ctx.reply('You will receive reminders 30 minutes before the starting time of each task.');
+  await ctx.reply('Your timezone is set to: ' + ctx.state.user.timezone);
+  ctx.reply('You can change your timezone from the user profile page on the productivv web app.');
+});
+
+bot.on('sticker', (ctx) => ctx.reply('That is a cool sticker!'));
+bot.on('text', (ctx) => ctx.reply('Sorry, I don\'t understand your message. Use /help to see the list of commands that you can use.'));
 
 bot.launch();
-

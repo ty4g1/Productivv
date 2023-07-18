@@ -13,7 +13,6 @@ app.use((req, res, next) => {
     next();
 });
 
-
 //routes
 app.use('/api/tasks',taskRoutes);
 app.use('/api/user',userRoutes);
@@ -23,7 +22,6 @@ app.use('/api/reset', resetRoutes);
 app.get('/', (req, res) => {
     res.send('req received')
 });
-
 
 //connect to db
 mongoose.connect(process.env.MONGO_URI)
@@ -36,8 +34,3 @@ mongoose.connect(process.env.MONGO_URI)
     .catch(err => {
         console.log(err.message)
     });
-
-
-
-
-
