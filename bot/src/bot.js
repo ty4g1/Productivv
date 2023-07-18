@@ -152,9 +152,10 @@ bot.command('cancel', async (ctx) => {
   ctx.reply('Reminders for today\'s tasks cancelled.');
 });
 
+/* For testing purposes only
 bot.command('test', async (ctx) => {
   console.log(scheduledJobs);
-})
+}) */
 
 bot.command('today', async (ctx) => {
   const tasks = await fetchTasks(ctx.state.user.token);
