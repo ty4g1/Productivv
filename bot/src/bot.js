@@ -155,9 +155,10 @@ bot.command('cancel', async (ctx) => {
 });
 
 bot.command('today', async (ctx) => {
+  const timezone = ctx.state.user.timezone;
   const tasks = await fetchTasks(ctx.state.user.token);
   const tasks_today = tasks.filter(task => {
-    return format(new Date(task.startTime), "do MMM Y") === format(new Date(), "do MMM Y");
+    return format(moment.tz(task.startTime, timezone).toDate(), "do MMM Y") === format(new Date(), "do MMM Y");
   });
   if (!tasks_today || tasks_today.length === 0) {
     return ctx.reply('You have no tasks today! Add some tasks on the productivv web app.');
@@ -168,8 +169,8 @@ bot.command('today', async (ctx) => {
         inline_keyboard: [
           [
             { text: 'Priority', callback_data: 'prio' },
-            { text: 'Start Time', callback_data: 'start'},
-            { text: 'End Time', callback_data: 'end'}
+            { text: 'Start Time', callback_data: 'start' },
+            { text: 'End Time', callback_data: 'end' }
           ]
         ]
       }
@@ -178,9 +179,10 @@ bot.command('today', async (ctx) => {
 
 bot.action('prio', async (ctx) => {
   ctx.answerCbQuery();
+  const timezone = ctx.state.user.timezone;
   const tasks = await fetchTasks(ctx.state.user.token);
   const tasks_today = tasks.filter(task => {
-    return !task.completed && format(new Date(task.startTime), "do MMM Y") === format(new Date(), "do MMM Y");
+    return format(moment.tz(task.startTime, timezone).toDate(), "do MMM Y") === format(new Date(), "do MMM Y");
   });
   if (!tasks_today || tasks_today.length === 0) {
     return ctx.reply("You don't have any tasks today!");
@@ -189,19 +191,22 @@ bot.action('prio', async (ctx) => {
   await tasks_today.sort((a, b) => {
     return a.priority - b.priority;
   });
-  tasks_today.forEach(task => {
-    ctx.reply(`${task.title} \nfrom *${format(new Date(task.startTime), "hh:mm a")}*, *${format(new Date(task.startTime), "do MMM Y")}* \nto *${format(new Date(task.endTime), "hh:mm a")}*, *${format(new Date(task.endTime), "do MMM Y")}* \nwith tags:${task.tags.map(tag => ` *${tag}* `)} \npriority: *${task.priority}*`,
+  const len = tasks_today.length
+  for (let i = 0; i < len; i++) {
+    const task = tasks_today[i];
+    await ctx.reply(`${task.title} \nfrom *${format(new Date(task.startTime), "hh:mm a")}*, *${format(new Date(task.startTime), "do MMM Y")}* \nto *${format(new Date(task.endTime), "hh:mm a")}*, *${format(new Date(task.endTime), "do MMM Y")}* \nwith tags:${task.tags.map(tag => ` *${tag}* `)} \npriority: *${task.priority}*`,
       {
         parse_mode: 'Markdown'
       });
-  });
+  }
 });
 
 bot.action('start', async (ctx) => {
   ctx.answerCbQuery();
+  const timezone = ctx.state.user.timezone;
   const tasks = await fetchTasks(ctx.state.user.token);
   const tasks_today = tasks.filter(task => {
-    return !task.completed && format(new Date(task.startTime), "do MMM Y") === format(new Date(), "do MMM Y");
+    return format(moment.tz(task.startTime, timezone).toDate(), "do MMM Y") === format(new Date(), "do MMM Y");
   });
   if (!tasks_today || tasks_today.length === 0) {
     return ctx.reply("You don't have any tasks for today!");
@@ -210,19 +215,22 @@ bot.action('start', async (ctx) => {
   await tasks_today.sort((a, b) => {
     return new Date(a.startTime) - new Date(b.startTime);
   });
-  tasks_today.forEach(task => {
-    ctx.reply(`${task.title} \nfrom *${format(new Date(task.startTime), "hh:mm a")}*, *${format(new Date(task.startTime), "do MMM Y")}* \nto *${format(new Date(task.endTime), "hh:mm a")}*, *${format(new Date(task.endTime), "do MMM Y")}* \nwith tags:${task.tags.map(tag => ` *${tag}* `)} \npriority: *${task.priority}*`,
+  const len = tasks_today.length
+  for (let i = 0; i < len; i++) {
+    const task = tasks_today[i];
+    await ctx.reply(`${task.title} \nfrom *${format(new Date(task.startTime), "hh:mm a")}*, *${format(new Date(task.startTime), "do MMM Y")}* \nto *${format(new Date(task.endTime), "hh:mm a")}*, *${format(new Date(task.endTime), "do MMM Y")}* \nwith tags:${task.tags.map(tag => ` *${tag}* `)} \npriority: *${task.priority}*`,
       {
         parse_mode: 'Markdown'
       });
-  });
+  }
 });
 
 bot.action('end', async (ctx) => {
   ctx.answerCbQuery();
+  const timezone = ctx.state.user.timezone;
   const tasks = await fetchTasks(ctx.state.user.token);
   const tasks_today = tasks.filter(task => {
-    return !task.completed && format(new Date(task.endTime), "do MMM Y") === format(new Date(), "do MMM Y");
+    return format(moment.tz(task.startTime, timezone).toDate(), "do MMM Y") === format(new Date(), "do MMM Y");
   });
   if (!tasks_today || tasks_today.length === 0) {
     return ctx.reply("You don't have any tasks for today!");
@@ -231,12 +239,14 @@ bot.action('end', async (ctx) => {
   await tasks_today.sort((a, b) => {
     return new Date(a.endTime) - new Date(b.endTime);
   });
-  tasks_today.forEach(task => {
-    ctx.reply(`${task.title} \nfrom *${format(new Date(task.startTime), "hh:mm a")}*, *${format(new Date(task.startTime), "do MMM Y")}* \nto *${format(new Date(task.endTime), "hh:mm a")}*, *${format(new Date(task.endTime), "do MMM Y")}* \nwith tags:${task.tags.map(tag => ` *${tag}* `)} \npriority: *${task.priority}*`,
+  const len = tasks_today.length
+  for (let i = 0; i < len; i++) {
+    const task = tasks_today[i];
+    await ctx.reply(`${task.title} \nfrom *${format(new Date(task.startTime), "hh:mm a")}*, *${format(new Date(task.startTime), "do MMM Y")}* \nto *${format(new Date(task.endTime), "hh:mm a")}*, *${format(new Date(task.endTime), "do MMM Y")}* \nwith tags:${task.tags.map(tag => ` *${tag}* `)} \npriority: *${task.priority}*`,
       {
         parse_mode: 'Markdown'
       });
-  });
+  }
 });
 
 // Basic commands and  
