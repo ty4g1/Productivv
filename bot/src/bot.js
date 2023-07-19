@@ -107,8 +107,9 @@ const sendReminder = (ctx, reminderText) => {
 };
 
 // Handler for incoming messages to track active chat contexts
-bot.on('message', (ctx, next) => {
-  if (!activeContexts.includes(ctx)) {
+bot.on('message', async (ctx, next) => {
+  const filteredContext = activeContexts.filter(ctxObj => ctxObj.chat.id === ctx.chat.id);
+  if (!filteredContext || filteredContext.length === 0) {
     activeContexts.push(ctx);
     console.log(`Chat ID ${ctx.chat.id} added to active contexts.`);
   }
@@ -124,10 +125,11 @@ const scheduleRemindersForAllContexts = async () => {
 };
 
 // Schedule reminders every hour
-setInterval(async () => {
+
+schedule.scheduleJob('30 * * * *', async () => {
   console.log('Scheduling reminders for all active contexts.');
   await scheduleRemindersForAllContexts();
-}, 1000 * 60 * 60);
+});
 
 bot.use(async (ctx, next) => {
   const response = await fetchUser(ctx.from.username);
@@ -151,11 +153,6 @@ bot.command('cancel', async (ctx) => {
   await cancelRemindersForContext(ctx);
   ctx.reply('Reminders for today\'s tasks cancelled.');
 });
-
-/* For testing purposes only
-bot.command('test', async (ctx) => {
-  console.log(scheduledJobs);
-}) */
 
 bot.command('today', async (ctx) => {
   const tasks = await fetchTasks(ctx.state.user.token);
