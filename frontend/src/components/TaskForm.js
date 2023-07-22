@@ -6,7 +6,7 @@ import CreatableSelect from 'react-select/creatable';
 import Slider from '@mui/material/Slider';
 
 const options = [
-    { value: 'Recreation', label: 'Reacreation' },
+    { value: 'Recreation', label: 'Recreation' },
     { value: 'Work', label: 'Work' },
     { value: 'School', label: 'School' },
     { value: 'Exercise', label: 'Exercise' }

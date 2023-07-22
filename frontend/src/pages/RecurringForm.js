@@ -17,7 +17,7 @@ const options = [
 ];
 
 const tagoptions = [
-    { value: 'Recreation', label: 'Reacreation' },
+    { value: 'Recreation', label: 'Recreation' },
     { value: 'Work', label: 'Work' },
     { value: 'School', label: 'School' },
     { value: 'Exercise', label: 'Exercise' }
