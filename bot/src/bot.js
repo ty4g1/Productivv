@@ -61,7 +61,7 @@ const scheduleRemindersForContext = async (ctx) => {
   const timezone = ctx.state.user.timezone;
   const tasks = await fetchTasks(ctx.state.user.token);
   const tasksToday = tasks.filter(task => {
-    return format(new Date(task.startTime), "do MMM Y") === format(new Date(), "do MMM Y");
+    return format(moment.tz(task.startTime, timezone).toDate(), "do MMM Y") === format(new Date(), "do MMM Y");
   });
   const jobs = []
   // Iterate over the filtered tasks and schedule reminders
@@ -126,7 +126,7 @@ const scheduleRemindersForAllContexts = async () => {
 
 // Schedule reminders every hour
 
-schedule.scheduleJob('30 * * * *', async () => {
+schedule.scheduleJob('0 * * * *', async () => {
   console.log('Scheduling reminders for all active contexts.');
   await scheduleRemindersForAllContexts();
 });
