@@ -30,8 +30,7 @@ const userSchema = new Schema({
         default: false
     },
     points: {
-        type: Number,
-        default: 0
+        type: Number
     },
     timezone: {
         type: String,
@@ -64,7 +63,7 @@ userSchema.statics.signup = async function(email, pass) {
     const salt = await bcrypt.genSalt(10);   //append to end of password so idenctical passwords have different hashes
     const hash = await bcrypt.hash(pass, salt);
 
-    const user = await this.create({email, password: hash, username: email.split('@')[0]});
+    const user = await this.create({email, password: hash, username: email.split('@')[0], points: 0});
     return user;
 }
 
