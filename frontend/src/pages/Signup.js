@@ -53,10 +53,10 @@ const Signup = () => {
             <h2>Sign Up</h2>
             <form onSubmit={handleSubmit}>
                 <label>Email:</label>
-                <input type="email" required onChange={(e) => setEmail(e.target.value)} value={email} disabled={usingGoogle}/>
+                <input type="email" placeholder="Enter your email" required onChange={(e) => setEmail(e.target.value)} value={email} disabled={usingGoogle}/>
                 <label>Password:</label>
                 <p>Must be over 8 characters long and include uppercase and lowercase letters, numbers, and a special character</p>
-                <input type="password" required onChange={(e) => setPassword(e.target.value)} value={password}/>
+                <input type="password" placeholder="Enter your password" required onChange={(e) => setPassword(e.target.value)} value={password}/>
                 <button disabled={isLoading || google_isLoading}>Sign Up</button>
                 {error && <div className="error">{error}</div>}
                 {google_error && <div className="error">{google_error}</div>}
