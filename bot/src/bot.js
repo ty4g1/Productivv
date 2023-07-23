@@ -206,7 +206,7 @@ bot.action('start', async (ctx) => {
   if (!tasks_today || tasks_today.length === 0) {
     return ctx.reply("You don't have any tasks for today!");
   }
-  await ctx.reply('These are your current tasks by starting time:');
+  await ctx.reply('These are your tasks for today by starting time:');
   await tasks_today.sort((task1, task2) => {
     return new Date(task1.startTime) - new Date(task2.startTime);
   });
@@ -227,7 +227,7 @@ bot.action('end', async (ctx) => {
   if (!tasks_today || tasks_today.length === 0) {
     return ctx.reply("You don't have any tasks for today!");
   }
-  await ctx.reply('These are your current tasks by ending time:');
+  await ctx.reply('These are your tasks for today by ending time:');
   await tasks_today.sort((task1, task2) => {
     return new Date(task1.endTime) - new Date(task2.endTime);
   });
