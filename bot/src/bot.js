@@ -185,9 +185,9 @@ bot.action('prio', async (ctx) => {
   if (!tasks_today || tasks_today.length === 0) {
     return ctx.reply("You don't have any tasks today!");
   }
-  await ctx.reply('These are your current tasks by priority:');
+  await ctx.reply('These are your tasks for today by priority:');
   await tasks_today.sort((task1, task2) => {
-    return task1.priority - task2.priority;
+    return task2.priority - task1.priority;
   });
   tasks_today.forEach(task => {
     ctx.reply(`${task.title} \nfrom *${format(new Date(task.startTime), "hh:mm a")}*, *${format(new Date(task.startTime), "do MMM Y")}* \nto *${format(new Date(task.endTime), "hh:mm a")}*, *${format(new Date(task.endTime), "do MMM Y")}* \nwith tags:${task.tags.map(tag => ` *${tag}* `)} \npriority: *${task.priority}*`,
