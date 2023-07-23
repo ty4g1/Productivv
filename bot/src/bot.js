@@ -188,8 +188,8 @@ bot.action('prio', async (ctx) => {
     return ctx.reply("You don't have any tasks today!");
   }
   await ctx.reply('These are your current tasks by priority:');
-  await tasks_today.sort((a, b) => {
-    return a.priority - b.priority;
+  await tasks_today.sort((task1, task2) => {
+    return task1.priority - task2.priority;
   });
   const len = tasks_today.length
   for (let i = 0; i < len; i++) {
@@ -212,8 +212,8 @@ bot.action('start', async (ctx) => {
     return ctx.reply("You don't have any tasks for today!");
   }
   await ctx.reply('These are your current tasks by starting time:');
-  await tasks_today.sort((a, b) => {
-    return new Date(a.startTime) - new Date(b.startTime);
+  await tasks_today.sort((task1, task2) => {
+    return new Date(task1.startTime) - new Date(task2.startTime);
   });
   const len = tasks_today.length
   for (let i = 0; i < len; i++) {
@@ -236,8 +236,8 @@ bot.action('end', async (ctx) => {
     return ctx.reply("You don't have any tasks for today!");
   }
   await ctx.reply('These are your current tasks by ending time:');
-  await tasks_today.sort((a, b) => {
-    return new Date(a.endTime) - new Date(b.endTime);
+  await tasks_today.sort((task1, task2) => {
+    return new Date(task1.endTime) - new Date(task2.endTime);
   });
   const len = tasks_today.length
   for (let i = 0; i < len; i++) {

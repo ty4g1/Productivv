@@ -43,9 +43,9 @@ const Login = () => {
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
                 <label>Email:</label>
-                <input type="email" required onChange={(e) => setEmail(e.target.value)} value={email}/>
+                <input type="email" placeholder="Enter your email" required onChange={(e) => setEmail(e.target.value)} value={email}/>
                 <label>Password:</label>
-                <input type="password" required onChange={(e) => setPassword(e.target.value)} value={password}/>
+                <input type="password" placeholder="Enter your password" required onChange={(e) => setPassword(e.target.value)} value={password}/>
                 <button disabled={isLoading || google_isLoading}>Log in</button>
                 <Link to='/forgot-password' style={{color: 'white', textDecoration: 'none'}}>Forgot password?</Link>
                 {google_error && <div className="error">{google_error}</div>}
