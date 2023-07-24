@@ -158,7 +158,7 @@ bot.command('today', async (ctx) => {
   const timezone = ctx.state.user.timezone;
   const tasks = await fetchTasks(ctx.state.user.token);
   const tasks_today = tasks.filter(task => {
-    return format(moment.tz(task.startTime, timezone).toDate(), "do MMM Y") === format(new Date(), "do MMM Y");
+    return moment.tz(task.startTime, timezone).format('DD/MM/YYYY') === moment().tz(timezone).format('DD/MM/YYYY');
   });
   if (!tasks_today || tasks_today.length === 0) {
     return ctx.reply('You have no tasks today! Add some tasks on the productivv web app.');
@@ -182,7 +182,7 @@ bot.action('prio', async (ctx) => {
   const timezone = ctx.state.user.timezone;
   const tasks = await fetchTasks(ctx.state.user.token);
   const tasks_today = tasks.filter(task => {
-    return format(moment.tz(task.startTime, timezone).toDate(), "do MMM Y") === format(new Date(), "do MMM Y");
+    return moment.tz(task.startTime, timezone).format('DD/MM/YYYY') === moment().tz(timezone).format('DD/MM/YYYY');
   });
   if (!tasks_today || tasks_today.length === 0) {
     return ctx.reply("You don't have any tasks today!");
@@ -206,7 +206,7 @@ bot.action('start', async (ctx) => {
   const timezone = ctx.state.user.timezone;
   const tasks = await fetchTasks(ctx.state.user.token);
   const tasks_today = tasks.filter(task => {
-    return format(moment.tz(task.startTime, timezone).toDate(), "do MMM Y") === format(new Date(), "do MMM Y");
+    return moment.tz(task.startTime, timezone).format('DD/MM/YYYY') === moment().tz(timezone).format('DD/MM/YYYY');
   });
   if (!tasks_today || tasks_today.length === 0) {
     return ctx.reply("You don't have any tasks for today!");
@@ -230,7 +230,7 @@ bot.action('end', async (ctx) => {
   const timezone = ctx.state.user.timezone;
   const tasks = await fetchTasks(ctx.state.user.token);
   const tasks_today = tasks.filter(task => {
-    return format(moment.tz(task.startTime, timezone).toDate(), "do MMM Y") === format(new Date(), "do MMM Y");
+    return moment.tz(task.startTime, timezone).format('DD/MM/YYYY') === moment().tz(timezone).format('DD/MM/YYYY');
   });
   if (!tasks_today || tasks_today.length === 0) {
     return ctx.reply("You don't have any tasks for today!");
